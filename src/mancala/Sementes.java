@@ -11,4 +11,5 @@ package mancala;
  */
 public class Sementes {
     
+    
 }
