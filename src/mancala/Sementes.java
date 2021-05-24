@@ -10,6 +10,7 @@ package mancala;
  * @author DanielSilva
  */
 public class Sementes {
-    
+    String cor;
+    int pos;
     
 }

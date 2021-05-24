@@ -6,7 +6,7 @@
 package mancala;
 
 /**
- *
+ *  Class Principal
  * @author DanielSilva
  */
 public class Mancala {
@@ -14,12 +14,6 @@ public class Mancala {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        // Comentário
-        
-        
-        //COMENTÁRIO TIAGO TESTE
-    }
+   
     
 }

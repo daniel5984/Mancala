@@ -11,8 +11,8 @@ package mancala;
  * @author tiagofigueiredo
  */
 public class Jogador {
-    
     String nome;
     String cor;
     int num_pecas;
+    int pontos; 
 }

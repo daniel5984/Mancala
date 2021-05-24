@@ -10,8 +10,9 @@ package mancala;
  * @author DanielSilva
  */
 public class Board {
-    
-    
-    
+    boolean ganhou;
+    int jogadores[];
+    int pontosJogadorA;
+    int pontosJogadorB;
     
 }
