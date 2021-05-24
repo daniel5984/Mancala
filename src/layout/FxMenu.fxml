@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mancala.FxMenuController">
+   <children>
+      <ImageView fitHeight="485.0" fitWidth="786.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+         <image>
+            <Image url="@../images/fundo.jpg" />
+         </image>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+         <image>
+            <Image url="@../images/nomeJogo.png" />
+         </image>
+         <StackPane.margin>
+            <Insets top="50.0" />
+         </StackPane.margin>
+      </ImageView>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="63.0" prefWidth="377.0" spacing="20.0" StackPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="botaoSair" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/sair.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="botaoIniciar" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/iniciar.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="botaoTop10" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/top10.png" />
+               </image>
+            </ImageView>
+         </children>
+         <StackPane.margin>
+            <Insets top="200.0" />
+         </StackPane.margin>
+      </HBox>
+   </children>
+</StackPane>
