@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 /**
- *
+ * Esta classe serve para mudar o layout dos fxml passando o nome do layout
  * @author DanielSilva
  */
 public class MudarLayout {

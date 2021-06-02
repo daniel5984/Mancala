@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="718.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="407.0" fitWidth="896.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/fundoNovo.jpg" />
+         </image>
+      </ImageView>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <StackPane prefHeight="100.0" prefWidth="718.0">
+               <children>
+                  <ImageView fitHeight="251.0" fitWidth="718.0" pickOnBounds="true" StackPane.alignment="BOTTOM_CENTER">
+                     <image>
+                        <Image url="@../images/tabuleiro.png" />
+                     </image>
+                     <StackPane.margin>
+                        <Insets bottom="50.0" />
+                     </StackPane.margin>
+                  </ImageView>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <StackPane centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="80.0">
+                           <children>
+                              <ImageView fx:id="buraco_6" fitHeight="150.0" fitWidth="200.0" opacity="0.6" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@../images/kallah.png" />
+                                 </image>
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                              </ImageView>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </StackPane>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_5" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_7" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_4" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_8" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_3" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_9" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_2" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_10" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_1" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_11" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_0" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_12" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="80.0">
+                           <children>
+                              <ImageView fx:id="buraco_13" fitHeight="150.0" fitWidth="200.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/kallah.png" />
+                                 </image>
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                              </ImageView>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </StackPane>
+                     </children>
+                     <StackPane.margin>
+                        <Insets top="40.0" />
+                     </StackPane.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </StackPane>
+         </children>
+         <StackPane.margin>
+            <Insets top="140.0" />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>
