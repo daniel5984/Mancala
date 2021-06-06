@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -32,5 +33,20 @@ public class FxMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void sairClick(MouseEvent event) {
+        System.out.println("Sair");
+    }
+
+    @FXML
+    private void iniciarClick(MouseEvent event) {
+        System.out.println("iniciar");
+    }
+
+    @FXML
+    private void top10Click(MouseEvent event) {
+        System.out.println("top10");
+    }
     
 }

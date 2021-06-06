@@ -26,17 +26,17 @@
       </ImageView>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="63.0" prefWidth="377.0" spacing="20.0" StackPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="botaoSair" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="botaoSair" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#sairClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/sair.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="botaoIniciar" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="botaoIniciar" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#iniciarClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/iniciar.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="botaoTop10" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="botaoTop10" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#top10Click" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/top10.png" />
                </image>

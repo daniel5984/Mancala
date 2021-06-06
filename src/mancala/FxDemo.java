@@ -16,17 +16,26 @@ import javafx.stage.Stage;
  * @author DanielSilva
  */
 public class FxDemo extends Application {
-    
+    private static Stage stagePrincipal;
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FxDemo.fxml"));
         
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("path/stylesheet.css");
-        stage.setScene(scene);
-        stage.show();
+        try{
+                stagePrincipal = stage;
+		new MudarLayout("FxMenu").load();
+		stagePrincipal.setResizable(false);
+		stagePrincipal.show();
+		stagePrincipal.setTitle("Mancala");
+        
+        }catch(Exception e){
+            System.out.println(e.toString());
+            
+        }
     }
 
+    	public static Stage getMainStage() {
+		return stagePrincipal;
+	}
     /**
      * @param args the command line arguments
      */
