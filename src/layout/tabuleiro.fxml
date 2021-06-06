@@ -157,5 +157,14 @@
             <Insets top="140.0" />
          </StackPane.margin>
       </VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="68.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/voltar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </children>
 </StackPane>

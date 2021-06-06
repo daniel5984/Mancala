@@ -7,6 +7,7 @@ package mancala;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
@@ -37,11 +38,15 @@ public class FxMenuController implements Initializable {
     @FXML
     private void sairClick(MouseEvent event) {
         System.out.println("Sair");
+        Platform.exit();
+        System.exit(0);
+        
     }
 
     @FXML
     private void iniciarClick(MouseEvent event) {
         System.out.println("iniciar");
+        new MudarLayout("tabuleiro").load();
     }
 
     @FXML
