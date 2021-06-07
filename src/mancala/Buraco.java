@@ -6,11 +6,9 @@
 package mancala;
 
 /**
- * Cada Jogador possui 24 sementes , ao todo o campo tem 48 sementes 24 para cada jogador
+ *
  * @author DanielSilva
  */
-public class Sementes {
-    String cor;
-    int pos;
+public class Buraco {
     
 }
