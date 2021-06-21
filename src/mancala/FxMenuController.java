@@ -5,6 +5,7 @@
  */
 package mancala;
 
+import com.sun.javafx.runtime.VersionInfo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -52,6 +53,7 @@ public class FxMenuController implements Initializable {
     @FXML
     private void top10Click(MouseEvent event) {
         System.out.println("top10");
+        System.out.println(VersionInfo.getRuntimeVersion());
     }
     
 }

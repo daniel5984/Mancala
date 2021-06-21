@@ -6,6 +6,7 @@
 package layout;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
@@ -14,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import mancala.MudarLayout;
+import mancala.Buraco;
+import mancala.Tabuleiro;
 
 /**
  * FXML Controller class
@@ -52,13 +55,30 @@ public class TabuleiroController implements Initializable {
     private ImageView buraco_13;
     @FXML
     private ImageView voltar_butao;
-
+    
+    private HashMap<ImageView, Buraco> imagemBuracoAss;
+    
+    
+    
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ImageView[] imagensBuraco = { buraco_0, buraco_1, buraco_2, buraco_3, buraco_4, buraco_5, buraco_6, buraco_7, buraco_8, buraco_9,
+				buraco_10, buraco_11, buraco_12, buraco_13 };
+        
+        
+        
+        imagemBuracoAss = new HashMap<ImageView,Buraco>();//Associar cada imagem do buraco a um objeto da class Buraco
+        tabuleiro = new Tabuleiro(imagensBuraco, status, playeroneavatar, playertwoavatar);
+	tabuleiro.populateMarbles(marbleholder);
+        for (int i = 0; i < imagensBuraco.length; i++)
+			imagemBuracoAss.put(selectionImageViews[i], tabuleiro.getSlot(i));
+        
+        
     }    
 
     @FXML
@@ -68,8 +88,10 @@ public class TabuleiroController implements Initializable {
     
     
     
-    /*
-    Esta class atribui transisção de opacidade de cada buraco quando o rato entra
+   /**
+    * Esta class atribui transisção de opacidade de cada buraco quando o rato entra
+    * @param node
+    * @param scale 
     */
     private void mudaOpacidade(ImageView node, float scale) {
 		FadeTransition obj = new FadeTransition(Duration.millis(500), node);
@@ -79,12 +101,21 @@ public class TabuleiroController implements Initializable {
 	}
 
     @FXML
-    private void rato_saiu(MouseEvent event) {
+    private void rato_saiu(MouseEvent e) {
+       Buraco selectedSlot = imagemBuraco.get((ImageView) e.getSource());
+		mudaOpacidade(selectedSlot.getImageView(), 0.5f);
+        
     }
 
     @FXML
-    private void rato_entrou(MouseEvent event) {
-            Slot selectedSlot = selectionMap.get((ImageView) e.getSource());
-		fadeNode(selectedSlot.getImageView(), 0.5f);
+    private void rato_entrou(MouseEvent e) {
+        Buraco selectedSlot = imagemBuraco.get((ImageView) e.getSource());
+		mudaOpacidade(selectedSlot.getImageView(), 0.3f);
     }
+
 }
+//    private void rato_entrou(MouseEvent event) {
+//            Buraco selectedSlot = selectionMap.get((ImageView) event.getSource());
+//		fadeNode(selectedSlot.getImageView(), 0.5f);
+//    }
+
