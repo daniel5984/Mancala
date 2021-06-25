@@ -18,15 +18,24 @@ public class MudarLayout {
   
     private String address;
 	
-	public MudarLayout(String address) {
+    /**
+     *
+     * @param address
+     */
+    public MudarLayout(String address) {
 		this.address = address;
 	}
-	public void load() {
+
+    /**
+     *
+     */
+    public void load() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/" + address + ".fxml"));
 		try {
 			FxDemo.getMainStage().setScene(new Scene((Pane)loader.load()));
 		} catch (IOException e) {
 			e.printStackTrace();
+                        System.out.println(e.toString());
 		}
 	}
 }

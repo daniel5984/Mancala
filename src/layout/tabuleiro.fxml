@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="718.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.TabuleiroController">
+<StackPane fx:id="principalView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.TabuleiroController">
    <children>
-      <ImageView fitHeight="407.0" fitWidth="896.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="520.0" fitWidth="793.0" pickOnBounds="true">
          <image>
             <Image url="@../images/fundoNovo.jpg" />
          </image>
       </ImageView>
-      <Label prefHeight="64.0" prefWidth="224.0" text="Estado do Jogo" textFill="WHITE" textOverrun="CLIP" StackPane.alignment="TOP_CENTER">
-         <font>
-            <Font name="Arial" size="31.0" />
-         </font>
-         <StackPane.margin>
-            <Insets top="60.0" />
-         </StackPane.margin>
-      </Label>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
-            <StackPane prefHeight="100.0" prefWidth="718.0">
+            <StackPane fx:id="boardpane" prefHeight="100.0" prefWidth="700.0">
                <children>
                   <ImageView fitHeight="251.0" fitWidth="718.0" pickOnBounds="true" StackPane.alignment="BOTTOM_CENTER">
                      <image>
@@ -36,16 +31,16 @@
                         <Insets bottom="50.0" />
                      </StackPane.margin>
                   </ImageView>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox fx:id="tabuleiro_layout" prefHeight="261.0" prefWidth="745.0" spacing="10.0">
                      <children>
-                        <StackPane centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="80.0">
+                        <StackPane centerShape="false" prefHeight="162.0" prefWidth="80.0">
                            <children>
                               <ImageView fx:id="buraco_6" fitHeight="150.0" fitWidth="200.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
                                  <image>
                                     <Image url="@../images/kallah.png" />
                                  </image>
                                  <StackPane.margin>
-                                    <Insets />
+                                    <Insets bottom="80.0" />
                                  </StackPane.margin>
                               </ImageView>
                            </children>
@@ -55,26 +50,12 @@
                         </StackPane>
                         <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
                            <children>
-                              <ImageView fx:id="buraco_5" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_5" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="buraco_7" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/buraco.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
-                           <children>
-                              <ImageView fx:id="buraco_4" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/buraco.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="buraco_8" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_7" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
@@ -83,26 +64,12 @@
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
                            <children>
-                              <ImageView fx:id="buraco_3" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_4" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="buraco_9" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/buraco.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
-                           <children>
-                              <ImageView fx:id="buraco_2" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/buraco.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="buraco_10" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_8" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
@@ -111,12 +78,12 @@
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
                            <children>
-                              <ImageView fx:id="buraco_1" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_3" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="buraco_11" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_9" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
@@ -125,26 +92,54 @@
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
                            <children>
-                              <ImageView fx:id="buraco_0" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_2" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="buraco_12" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_10" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/buraco.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </VBox>
-                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="80.0">
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
                            <children>
-                              <ImageView fx:id="buraco_13" fitHeight="150.0" fitWidth="200.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="buraco_1" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_11" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="80.0" spacing="30.0">
+                           <children>
+                              <ImageView fx:id="buraco_0" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="buraco_12" fitHeight="80.0" fitWidth="80.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/buraco.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <StackPane prefHeight="169.0" prefWidth="80.0">
+                           <children>
+                              <ImageView fx:id="buraco_13" fitHeight="150.0" fitWidth="200.0" onMouseEntered="#rato_entrou" onMouseExited="#rato_saiu" opacity="0.6" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/kallah.png" />
                                  </image>
                                  <StackPane.margin>
-                                    <Insets />
+                                    <Insets bottom="80.0" />
                                  </StackPane.margin>
                               </ImageView>
                            </children>
@@ -154,7 +149,7 @@
                         </StackPane>
                      </children>
                      <StackPane.margin>
-                        <Insets top="40.0" />
+                        <Insets left="30.0" top="40.0" />
                      </StackPane.margin>
                   </HBox>
                </children>
@@ -167,35 +162,65 @@
             <Insets top="140.0" />
          </StackPane.margin>
       </VBox>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="117.0" prefWidth="718.0" spacing="20.0" StackPane.alignment="TOP_CENTER">
+      <HBox disable="true" fillHeight="false" mouseTransparent="true" prefHeight="160.0" prefWidth="780.0" spacing="20.0" StackPane.alignment="TOP_CENTER">
          <children>
             <ImageView fx:id="voltar_butao" fitHeight="68.0" fitWidth="89.0" onMouseClicked="#voltar" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/voltar.png" />
                </image>
-            </ImageView>
-            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../build/classes/images/avatar.png" />
-               </image>
                <HBox.margin>
-                  <Insets left="15.0" />
-               </HBox.margin></ImageView>
-            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-               <HBox.margin>
-                  <Insets left="400.0" />
+                  <Insets />
                </HBox.margin>
-               <image>
-                  <Image url="@../../build/classes/images/avatar.png" />
-               </image>
             </ImageView>
+            <HBox prefHeight="70.0" prefWidth="610.0" spacing="20.0">
+               <children>
+                  <ImageView fx:id="avatar1" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/avatar.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="avatar2" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="450.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../images/avatar.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets top="60.0" />
+               </HBox.margin>
+            </HBox>
          </children>
          <StackPane.margin>
-            <Insets top="20.0" />
+            <Insets top="10.0" />
          </StackPane.margin>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </HBox>
+      <Label fx:id="estado" alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="376.0" text="Estado do Jogo" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" StackPane.alignment="TOP_CENTER">
+         <font>
+            <Font name="Arial" size="31.0" />
+         </font>
+      </Label>
+      <StackPane fx:id="sementesInicio" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" prefHeight="10.0" prefWidth="10.0" scaleShape="false" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <cursor>
+            <Cursor fx:constant="NONE" />
+         </cursor>
+      </StackPane>
+      <Rectangle fx:id="rectangulo" arcHeight="5.0" arcWidth="5.0" height="519.0" opacity="0.7" stroke="BLACK" strokeType="INSIDE" width="788.0" />
+      <Button fx:id="btn_iniciar" mnemonicParsing="false" onMouseClicked="#iniciar" prefHeight="45.0" prefWidth="289.0" text="Iniciar" StackPane.alignment="CENTER">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Button>
    </children>
 </StackPane>

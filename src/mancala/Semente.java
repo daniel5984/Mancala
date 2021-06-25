@@ -20,27 +20,45 @@ public class Semente {
 
     private ImageView imageView;
 	
-	public Semente() {
+    /**
+     *
+     */
+    public Semente() {
 		imageView = new ImageView(getMarbleImage());
-		imageView.setFitHeight(30);
-		imageView.setFitWidth(30);
+		imageView.setFitHeight(20);
+		imageView.setFitWidth(20);
+                imageView.setMouseTransparent(true);
+                
 	}
 	
 	private Image getMarbleImage() {
 		return new Image("./images/semente.png");
 	}
 	
-	public ImageView getImageView() {
+    /**
+     *
+     * @return
+     */
+    public ImageView getImageView() {
 		return imageView;
 	}
 	
-	public void moveTo(Posicao position, int time) {
-		TranslateTransition tt = new TranslateTransition(Duration.millis(time * 1000), imageView);
+    /**
+     *
+     * @param position
+     * @param time
+     */
+    public void moveTo(Posicao position, int time) {
+          
+        TranslateTransition tt = new TranslateTransition(Duration.millis(time * 1000), this.imageView);
 	    tt.setToX(position.getX());
 	    tt.setToY(position.getY());
 	    tt.setCycleCount(1);
 	    tt.setAutoReverse(true);
 	    tt.play();
+            
+      
+            
 	}
     
 }

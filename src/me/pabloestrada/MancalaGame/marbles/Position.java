@@ -1,20 +1,37 @@
 package me.pabloestrada.MancalaGame.marbles;
 
+/**
+ *
+ * @author DanielSilva
+ */
 public class Position {
 
 	private int y;
 	private int x;
 
-	public Position(int x, int y) {
+    /**
+     *
+     * @param x
+     * @param y
+     */
+    public Position(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public int getY() {
+    /**
+     *
+     * @return
+     */
+    public int getY() {
 		return y;
 	}
 
-	public int getX() {
+    /**
+     *
+     * @return
+     */
+    public int getX() {
 		return x;
 	}
 	
@@ -22,7 +39,11 @@ public class Position {
 		return "x: "+ x+", "+"y: " + y;
 	}
 
-	public Position getSimilarPosition() {
+    /**
+     *
+     * @return
+     */
+    public Position getSimilarPosition() {
 		int range = 40;
 		int newX = (int) (x + ((Math.random() * range) - (range/2)));
 		int newY = (int) (y + ((Math.random() * range) - (range/2)));

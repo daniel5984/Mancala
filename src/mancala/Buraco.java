@@ -25,50 +25,96 @@ public class Buraco {
 	private Label label;
 	private int id;
 
-	public Buraco(Posicao position, boolean isBank, ImageView imageView, Label label, int id) {
+    /**
+     *
+     * @param position
+     * @param isBank
+     * @param imageView
+     * @param id
+     */
+    public Buraco(Posicao position, boolean isBank, ImageView imageView, int id) {
 		this.posicao = position;
+                
+                //Saber a posição
+                
+                
 		this.id = id;
 		this.imageView = imageView;
-		this.label = label;
+		//this.label = label;
 		this.isKallah = isBank;
 		sementes = new ArrayList<Semente>();
 	}
 
-	public boolean isBuracoKallah() {
+    /**
+     *
+     * @return
+     */
+    public boolean isBuracoKallah() {
 		return isKallah;
 	}
 
-	public int getMarbleCount() {
+    /**
+     *
+     * @return
+     */
+    public int getMarbleCount() {
 		return sementes.size();
 	}
 
-	public Posicao getPosition() {
+    /**
+     *
+     * @return
+     */
+    public Posicao getPosition() {
 		return posicao;
 	}
 
-	public boolean isEmpty() {
+    /**
+     *
+     * @return
+     */
+    public boolean isEmpty() {
 		return sementes.isEmpty();
 	}
 
-	public Semente[] clearMarbels() {
+    /**
+     *
+     * @return
+     */
+    public Semente[] clearMarbels() {
 		Semente[] marblesArray = sementes.toArray(new Semente[sementes.size()]);
 		sementes.clear();
 		//updateMarbleLabel();
 		return marblesArray;
 	}
 
-	public void addMarble(Semente marble, int time) {
+    /**
+     *
+     * @param marble
+     * @param time
+     */
+    public void addMarble(Semente marble, int time) {
 		sementes.add(marble);
 		marble.moveTo(getPosition().getSimilarPosition(), time);
 		//updateMarbleLabel();
 	}
 
-	public void addMarbles(Semente[] marbles, int time) {
+    /**
+     *
+     * @param marbles
+     * @param time
+     */
+    public void addMarbles(Semente[] marbles, int time) {
 		for (Semente marble : marbles)
 			addMarble(marble, time);
 	}
 
-	public boolean isMySide(TipoJogador tipo) {
+    /**
+     *
+     * @param tipo
+     * @return
+     */
+    public boolean isMySide(TipoJogador tipo) {
 		if (isKallah)
 			return false;
 		if (tipo == TipoJogador.JOGADOR_1 && id < 6)
@@ -88,11 +134,20 @@ public class Buraco {
 //		return label;
 //	}
 
+    /**
+     *
+     * @return
+     */
+
 	public ImageView getImageView() {
 		return imageView;
 	}
 
-	public int getId() {
+    /**
+     *
+     * @return
+     */
+    public int getId() {
 		return id;
 	}
 
