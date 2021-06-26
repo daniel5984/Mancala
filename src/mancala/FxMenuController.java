@@ -5,8 +5,10 @@
  */
 package mancala;
 
+import com.sun.javafx.runtime.VersionInfo;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
@@ -28,6 +30,8 @@ public class FxMenuController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -37,16 +41,21 @@ public class FxMenuController implements Initializable {
     @FXML
     private void sairClick(MouseEvent event) {
         System.out.println("Sair");
+        Platform.exit();
+        System.exit(0);
+        
     }
 
     @FXML
     private void iniciarClick(MouseEvent event) {
         System.out.println("iniciar");
+        new MudarLayout("tabuleiro").load();
     }
 
     @FXML
     private void top10Click(MouseEvent event) {
         System.out.println("top10");
+        System.out.println(VersionInfo.getRuntimeVersion());
     }
     
 }

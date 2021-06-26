@@ -6,13 +6,11 @@
 package mancala;
 
 /**
- * Aqui está representado o campo de jogo 
+ *
  * @author DanielSilva
  */
-public class Board {
-    boolean ganhou;
-    int jogadores[];
-    int pontosJogadorA;
-    int pontosJogadorB;
+public class Servidor {
+    
+    
     
 }

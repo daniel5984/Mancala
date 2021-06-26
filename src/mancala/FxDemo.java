@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -26,6 +27,7 @@ public class FxDemo extends Application {
 		stagePrincipal.setResizable(false);
 		stagePrincipal.show();
 		stagePrincipal.setTitle("Mancala");
+        //stagePrincipal.addEventFilter(MouseEvent.ANY, e -> System.out.println("X: "+ e.getX()+" Y:"+e.getY()));
         
         }catch(Exception e){
             System.out.println(e.toString());
@@ -33,7 +35,11 @@ public class FxDemo extends Application {
         }
     }
 
-    	public static Stage getMainStage() {
+    /**
+     *
+     * @return
+     */
+    public static Stage getMainStage() {
 		return stagePrincipal;
 	}
     /**
