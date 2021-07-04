@@ -21,6 +21,8 @@ import javafx.scene.input.MouseEvent;
  */
 public class FxMenuController implements Initializable {
 
+    private static boolean isServidor=false;
+    
     @FXML
     private ImageView botaoSair;
     @FXML
@@ -49,7 +51,12 @@ public class FxMenuController implements Initializable {
     @FXML
     private void iniciarClick(MouseEvent event) {
         System.out.println("iniciar");
-        new MudarLayout("tabuleiro").load();
+        if(isServidor){
+            
+        }else{
+          new MudarLayout("PrepararClient").load();  
+        }
+        
     }
 
     @FXML

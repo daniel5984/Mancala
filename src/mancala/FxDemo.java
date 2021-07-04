@@ -18,6 +18,8 @@ import javafx.stage.Stage;
  */
 public class FxDemo extends Application {
     private static Stage stagePrincipal;
+
+    
     @Override
     public void start(Stage stage) throws Exception {
         

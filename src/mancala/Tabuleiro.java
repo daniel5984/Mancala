@@ -37,9 +37,9 @@ public class Tabuleiro {
      * @param avatarJogador1
      * @param avatarJogador2
      */
-    public Tabuleiro(ImageView[] slotImages, Label status, ImageView avatarJogador1,ImageView avatarJogador2) {
+    public Tabuleiro(ImageView[] slotImages, Label status, ImageView avatarJogador1,ImageView avatarJogador2, int[] coordx, int[] coordy) {
        // System.out.println("Tabuleiro Constructor");
-		this.buracos = obterBuracos(slotImages);
+		this.buracos = obterBuracos(slotImages,coordx,coordy);
                 //System.out.println("Depois?");
 		this.jogadorAtual = TipoJogador.JOGADOR_1;
 		this.status = status;
@@ -51,9 +51,11 @@ public class Tabuleiro {
 		//updatePlayerAvatars();
 	}
 
+
+
     
     
-    private Buraco[] obterBuracos(ImageView[] slotImages) {
+    private Buraco[] obterBuracos(ImageView[] slotImages,int[] coordx, int[] coordy) {
         
                 final int[] xPos = { 614, 524, 434, 344, 254, 164, 75, 164, 254, 344, 434, 524, 614, 705 };//Coordenadas dos buracos em X
 		final int[] yPos = { 257, 257, 257, 257, 257, 257, 308, 367, 367, 367, 367, 367, 367, 308 };//Coordenadas dos buracos em Y
@@ -67,7 +69,7 @@ public class Tabuleiro {
                     
                             // Bounds boundsInScreen = slotImages[i].localToScene(slotImages[i].getBoundsInLocal());
                    
-			Posicao pos = new Posicao(xPos[i], yPos[i]);
+			Posicao pos = new Posicao(coordx[i], coordy[i]);
 			if (i == 6) {
 				buracoTemp[i] = new Kallah(pos, true, TipoJogador.COMPUTADOR, slotImages[i], i);
 				continue;
@@ -95,7 +97,7 @@ public class Tabuleiro {
      *
      * @param sementesInicio
      */
-    public void populateMarbles(StackPane sementesInicio) {
+    public void popularSementes(StackPane sementesInicio) {
        
 	//	MarbleColor[] colors = MarbleColor.values();
 		for (Buraco buraco : buracos) {

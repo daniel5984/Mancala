@@ -5,21 +5,37 @@
  */
 package layout;
 
+//import java.awt.Color;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.beans.binding.Bindings;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.CacheHint;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,6 +44,7 @@ import mancala.MudarLayout;
 import mancala.Buraco;
 import mancala.FxDemo;
 import mancala.Tabuleiro;
+
 
 /**
  * FXML Controller class
@@ -102,27 +119,29 @@ public class TabuleiroController implements Initializable {
          centrarJanela(FxDemo.getMainStage(), 800, 540);
          
        this.imagensBuraco = new ImageView[]{buraco_0, buraco_1, buraco_2, buraco_3, buraco_4, buraco_5, buraco_6, buraco_7, buraco_8, buraco_9, buraco_10, buraco_11, buraco_12, buraco_13};
-        
+     
+       mudaCorAvatar(avatar1,"amarelo");
+       mudaCorAvatar(avatar2,"azul");
+       
+   
+ //tImage(new Image(stream));
+       
+       //avatar1.setEffect(colorAdjust);
         //System.out.println(imagensBuraco[0].localToScene(imagensBuraco[0].getX(),imagensBuraco[0].getLayoutY()));
         // imagensBuraco[0].localToScreen(imagensBuraco[0].getBoundsInLocal());
        // System.out.println(imagensBuraco[1].localToParent(imagensBuraco[1].localToParent(imagensBuraco[1].localToParent(imagensBuraco[1].getBoundsInLocal()))));
        // System.out.println(imagensBuraco[0].getBoundsInParent().getMaxY());
        
         imagemBuracoAss = new HashMap<>(); //Associar cada imagem do buraco a um objeto da class Buraco
-        tabuleiro = new Tabuleiro(imagensBuraco, estado, avatar1, avatar2);
         
-	tabuleiro.populateMarbles(sementesInicio);//Popular as sementes no stack pane sementesInicio para depois animar para 4 sementes para cada buraco
         
-        for (int i = 0; i < imagensBuraco.length; i++){
-            imagemBuracoAss.put(imagensBuraco[i], tabuleiro.getSlot(i));
-        }
+	
         //sementesInicio.addEventFilter(MouseEvent.ANY, e -> System.out.println("X: "+ e.getX()+" Y:"+e.getY()));
 
      
 
       
      
-      
    
       //Bounds boundsInScreen = selectedSlot.getImageView().localToScene(selectedSlot.getImageView().getBoundsInLocal());
      }
@@ -136,17 +155,36 @@ public class TabuleiroController implements Initializable {
         principalView.getChildren().remove(btn_iniciar);
         principalView.getChildren().remove(rectangulo);
        
-        Bounds boundsInScreen = this.imagensBuraco[0].localToScene(this.imagensBuraco[0].getBoundsInLocal());
-        double x =boundsInScreen.getMinX()+boundsInScreen.getWidth()/2;
-        double y =boundsInScreen.getMinY()+boundsInScreen.getHeight()/2;
+        //Bounds boundsInScreen = this.imagensBuraco[0].localToScene(this.imagensBuraco[0].getBoundsInLocal());
+        //  double x =boundsInScreen.getMinX()+boundsInScreen.getWidth()/2-10;
+       // double y =boundsInScreen.getMinY()+boundsInScreen.getHeight()/2-10;
         //System.out.println(imagensBuraco[0].getId()+"ImagensBuraco -> X:"+x+"  Y"+y);
         
-        for(ImageView img :imagensBuraco){
-            Bounds b =   sementesInicio.sceneToLocal(img.localToScene(img.getBoundsInLocal()));
-         System.out.println(img.getId()+"Minx"+b.getMinX()+"Miny"+b.getMinY()); 
+        int[] coordx = new int[14];
+        int[] coordy = new int[14];
+        int cont=0;
+         for(ImageView img :imagensBuraco){
+         Bounds b =   sementesInicio.sceneToLocal(img.localToScene(img.getBoundsInLocal()));
+         double x =b.getMinX()+b.getWidth()/2-10;
+         double y =b.getMinY()+b.getHeight()/2-10;
+         coordx[cont]=(int)x;
+         coordy[cont]=(int)y;
+         System.out.println(x+"\n "+y+"\n");
+         //System.out.println(img.getId()+"Minx"+b.getMinX()+"Miny"+b.getMinY()); 
+         cont++;
+        }
+         tabuleiro = new Tabuleiro(imagensBuraco, estado, avatar1, avatar2,coordx,coordy);
+         tabuleiro.popularSementes(sementesInicio);//Popular as sementes no stack pane sementesInicio para depois animar para 4 sementes para cada buraco
+        
+        for (int i = 0; i < imagensBuraco.length; i++){
+            imagemBuracoAss.put(imagensBuraco[i], tabuleiro.getSlot(i));
         }
         
-         
+        
+        
+        
+        
+        
          
         /*
           imagemBuracoAss.forEach((img,buraco)->{
@@ -189,8 +227,8 @@ public class TabuleiroController implements Initializable {
        // System.out.println("Entrou");
         Bounds boundsInScreen = selectedSlot.getImageView().localToScene(selectedSlot.getImageView().getBoundsInLocal());
         
-        double x =boundsInScreen.getMinX()+boundsInScreen.getWidth()/2;
-        double y =boundsInScreen.getMinY()+boundsInScreen.getHeight()/2;
+        double x =boundsInScreen.getMaxX()-boundsInScreen.getWidth()/2-20;
+        double y =boundsInScreen.getMaxY()-boundsInScreen.getHeight()/2-20;
         System.out.println(selectedSlot.getImageView().getId()+"  X:"+x+"  Y"+y);
         
             //maxx - width/2 para obter  cordenadas x no meio do node
@@ -220,6 +258,20 @@ public class TabuleiroController implements Initializable {
 		stage.setX((screenBounds.getWidth() - width) / 2);
 		stage.setY((screenBounds.getHeight() - height) / 2);
 	}
+
+    private void mudaCorAvatar(ImageView avatar, String cor) {
+        
+        
+             try {
+            URL path = this.getClass().getResource("../images/avatar_"+cor+".png");
+            InputStream stream = new FileInputStream(path.getPath());
+            avatar.setImage(new Image(stream));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }
+
 
   
 }

@@ -44,7 +44,7 @@ public class Posicao {
      * @return
      */
     public Posicao getSimilarPosition() {
-		int range = 15;
+		int range = 20;
 		int newX = (int) (x + ((Math.random() * range) - (range/2)));
 		int newY = (int) (y + ((Math.random() * range) - (range/2)));
 		return new Posicao(newX, newY);

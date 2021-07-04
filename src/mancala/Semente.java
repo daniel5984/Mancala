@@ -6,8 +6,11 @@
 package mancala;
 
 import javafx.animation.TranslateTransition;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
@@ -24,12 +27,32 @@ public class Semente {
      *
      */
     public Semente() {
+        //Dropshadow é um efeito de sombra que vai ser aplicado a cada semente
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(8.0);
+        dropShadow.setOffsetX(5.0);
+        dropShadow.setOffsetY(5.0);
+        dropShadow.setColor(Color.color(0.0, 0.0, 0.0));
+        
+        InnerShadow innerShadow = new InnerShadow();
+        innerShadow.setOffsetX(1);
+        innerShadow.setOffsetY(1);
+        innerShadow.setRadius(2.0);
+        innerShadow.setWidth(0.1);
+        innerShadow.setColor(Color.web("0xffffff"));
+        
 		imageView = new ImageView(getMarbleImage());
 		imageView.setFitHeight(20);
 		imageView.setFitWidth(20);
                 imageView.setMouseTransparent(true);
                 
-	}
+                //effect2.setInput(effect3);
+               // effect1.setInput(effect2);
+             //    imageView.setEffect(effect1);
+                 dropShadow.setInput(innerShadow);
+                imageView.setEffect(dropShadow);
+              //  imageView.setEffect(innerShadow);
+	}       
 	
 	private Image getMarbleImage() {
 		return new Image("./images/semente.png");
