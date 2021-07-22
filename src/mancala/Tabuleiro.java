@@ -5,31 +5,36 @@
  */
 package mancala;
 
+import java.io.Serializable;
+import mancala.buracos.Posicao;
+import mancala.buracos.Semente;
+import mancala.buracos.Buraco;
+import mancala.buracos.Kallah;
 import java.util.Timer;
-import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import me.pabloestrada.MancalaGame.marbles.Position;
 
 /**
- * Aqui está representado o campo de jogo 
+ * Aqui está representado o campo de jogo
+ *
  * @author DanielSilva
  */
-public class Tabuleiro {
+public class Tabuleiro implements Serializable{
+
     boolean ganhou;
     int jogadores[];
     int pontosJogadorA;
     int pontosJogadorB;
-    
+
     private Buraco[] buracos;
     private TipoJogador jogadorAtual;
     private Label status;
     private Timer tempo;
     private boolean seJogoAcabou;
-    private  ImageView avatarJogador1;
-    private  ImageView avatarJogador2;
-    
+    private ImageView avatarJogador1;
+    private ImageView avatarJogador2;
+
     /**
      *
      * @param slotImages
@@ -37,60 +42,57 @@ public class Tabuleiro {
      * @param avatarJogador1
      * @param avatarJogador2
      */
-    public Tabuleiro(ImageView[] slotImages, Label status, ImageView avatarJogador1,ImageView avatarJogador2, int[] coordx, int[] coordy) {
-       // System.out.println("Tabuleiro Constructor");
-		this.buracos = obterBuracos(slotImages,coordx,coordy);
-                //System.out.println("Depois?");
-		this.jogadorAtual = TipoJogador.JOGADOR_1;
-		this.status = status;
-		this.avatarJogador1 = avatarJogador1;
-		this.avatarJogador2 = avatarJogador2;
-		this.tempo = new Timer();
-		this.seJogoAcabou = false;
-		//updatePlayerTurnStatus(false);
-		//updatePlayerAvatars();
-	}
-
-
-
-    
-    
-    private Buraco[] obterBuracos(ImageView[] slotImages,int[] coordx, int[] coordy) {
-        
-                final int[] xPos = { 614, 524, 434, 344, 254, 164, 75, 164, 254, 344, 434, 524, 614, 705 };//Coordenadas dos buracos em X
-		final int[] yPos = { 257, 257, 257, 257, 257, 257, 308, 367, 367, 367, 367, 367, 367, 308 };//Coordenadas dos buracos em Y
-                
-            
-        
-		Buraco[] buracoTemp = new Buraco[14];
-                
-		for (int i = 0; i < buracoTemp.length; i++) {
-                    
-                    
-                            // Bounds boundsInScreen = slotImages[i].localToScene(slotImages[i].getBoundsInLocal());
-                   
-			Posicao pos = new Posicao(coordx[i], coordy[i]);
-			if (i == 6) {
-				buracoTemp[i] = new Kallah(pos, true, TipoJogador.COMPUTADOR, slotImages[i], i);
-				continue;
-			}
-			if (i == 13) {
-				buracoTemp[i] = new Kallah(pos, true, TipoJogador.COMPUTADOR, slotImages[i], i);
-				continue;
-			}
-			buracoTemp[i] = new Buraco(pos, false, slotImages[i], i);
-		}
-		return buracoTemp;
-    }
-    
-   
-
-    private void updatePlayerTurnStatus(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Tabuleiro(ImageView[] slotImages, Label status, ImageView avatarJogador1, ImageView avatarJogador2, int[] coordx, int[] coordy) {
+        this.buracos = obterBuracos(slotImages, coordx, coordy);
+        this.jogadorAtual = TipoJogador.JOGADOR_1;
+        this.status = status;
+        this.avatarJogador1 = avatarJogador1;
+        this.avatarJogador2 = avatarJogador2;
+        this.tempo = new Timer();
+        this.seJogoAcabou = false;
+        atualizaStatusTurno(false);
     }
 
-    private void updatePlayerAvatars() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private Buraco[] obterBuracos(ImageView[] slotImages, int[] coordx, int[] coordy) {
+
+        final int[] xPos = {614, 524, 434, 344, 254, 164, 75, 164, 254, 344, 434, 524, 614, 705};           //Coordenadas dos buracos em X
+        final int[] yPos = {257, 257, 257, 257, 257, 257, 308, 367, 367, 367, 367, 367, 367, 308};          //Coordenadas dos buracos em Y
+
+        Buraco[] buracoTemp = new Buraco[14];
+
+        for (int i = 0; i < buracoTemp.length; i++) {
+
+            // Bounds boundsInScreen = slotImages[i].localToScene(slotImages[i].getBoundsInLocal());
+            Posicao pos = new Posicao(coordx[i], coordy[i]);
+            if (i == 6) {
+                buracoTemp[i] = new Kallah(pos, true, TipoJogador.JOGADOR_1, slotImages[i], i);
+                continue;
+            }
+            if (i == 13) {
+                buracoTemp[i] = new Kallah(pos, true, TipoJogador.JOGADOR_2, slotImages[i], i);
+                continue;
+            }
+            buracoTemp[i] = new Buraco(pos, false, slotImages[i], i);
+        }
+        return buracoTemp;
+    }
+
+    public boolean podeFazerTurno(int buracoSelecionado, TipoJogador tipoJogador) {
+        Buraco buracoAtual = getSlot(buracoSelecionado);
+        if (buracoAtual.isBuracoKallah()) {
+            return false;
+        }
+        if (buracoAtual.isEmpty()) {
+            return false;
+        }
+        if (tipoJogador == TipoJogador.JOGADOR_1 && buracoSelecionado < 6) {
+            return false;
+        }
+        if (tipoJogador == TipoJogador.JOGADOR_2 && buracoSelecionado > 6) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -98,60 +100,119 @@ public class Tabuleiro {
      * @param sementesInicio
      */
     public void popularSementes(StackPane sementesInicio) {
-       
-	//	MarbleColor[] colors = MarbleColor.values();
-		for (Buraco buraco : buracos) {
-			if (buraco.isBuracoKallah())
-				continue;
-			for (int i = 0; i < 4; i++) {
-				//int colorIndex = (int) (Math.random() * colors.length);
-                                
-				Semente currentMarble = new Semente();
-                                
-				sementesInicio.getChildren().add(currentMarble.getImageView());
-				buraco.addMarble(currentMarble, 3);
-			}
-		}
-	
+
+        //	MarbleColor[] colors = MarbleColor.values();
+        for (Buraco buraco : buracos) {
+            if (buraco.isBuracoKallah()) {
+                continue;
+            }
+            for (int i = 0; i < 4; i++) {
+                //int colorIndex = (int) (Math.random() * colors.length);
+
+                Semente currentMarble = new Semente();
+
+                sementesInicio.getChildren().add(currentMarble.getImageView());
+                buraco.addMarble(currentMarble, 3);
+            }
+        }
+
     }
 
-    /**
-     *
-     * @param selectedSlot
-     * @return
-     */
+    private boolean seBuracosVazios(int[] slotSet) {
+        for (int slot : slotSet) {
+            if (!buracos[slot].isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void processarTurno(int buracoSelecionado) {
+        Turno currentTurn = new Turno(buracos, buracoSelecionado, jogadorAtual);
+        boolean podeJogarDenovo = currentTurn.run();
+
+        TipoJogador oldPlayer = jogadorAtual;
+        jogadorAtual = obterJogadorOposto(oldPlayer);
+
+        if (podeJogarDenovo) {
+            jogadorAtual = oldPlayer;
+        }
+
+        int[] buracosJogador1 = {0, 1, 2, 3, 4, 5};
+        int[] buracosJogador2 = {7, 8, 9, 10, 11, 12};
+
+        if (verificarVencedor(buracosJogador1, buracosJogador2)) {
+            seJogoAcabou = true;
+            processarQuemGanha(buracosJogador1, buracosJogador2);
+        } else {
+            // updatePlayerAvatars();
+            atualizaStatusTurno(podeJogarDenovo);
+        }
+    }
+
+    private boolean verificarVencedor(int[] buracosJogador1, int[] buracosJogador2) {
+        if (seBuracosVazios(buracosJogador1)) {
+            return true;
+        }
+        if (seBuracosVazios(buracosJogador2)) {
+            return true;
+        }
+        return false;
+    }
+
+    private void processarQuemGanha(int[] buracosJogador1, int[] buracosJogador2) {
+        limparSementes(TipoJogador.JOGADOR_1, buracosJogador1);
+        limparSementes(TipoJogador.JOGADOR_2, buracosJogador2);
+
+        TipoJogador vencedor = TipoJogador.JOGADOR_1;
+        if (obterKallah(TipoJogador.JOGADOR_2).getMarbleCount() > obterKallah(TipoJogador.JOGADOR_1).getMarbleCount()) {
+            vencedor = TipoJogador.JOGADOR_2;
+        }
+
+        status.setText(Mancala.getInfo().getNome(vencedor) + " Ganhou!");
+    }
+
+    private void limparSementes(TipoJogador tipo, int[] slotSet) {
+        Buraco kallah = obterKallah(tipo);
+        for (int buraco : slotSet) {
+            kallah.addMarbles(buracos[buraco].clearMarbels(), 1);
+        }
+    }
+
+    private void atualizaStatusTurno(boolean podeIrDeNovo) {
+        String defaultText = " está agora a Jogar";
+        if (podeIrDeNovo) {
+            defaultText = " tem um turno extra por acertar ultima semente no Kallah";
+        }
+        status.setText(Mancala.getInfo().getNome(jogadorAtual) + defaultText);
+    }
+
+    private TipoJogador obterJogadorOposto(TipoJogador tipo) {
+        if (tipo == TipoJogador.JOGADOR_1) {
+            return TipoJogador.JOGADOR_2;
+        }
+        if (tipo == TipoJogador.JOGADOR_2) {
+            return TipoJogador.JOGADOR_1;
+        }
+        return TipoJogador.JOGADOR_1;
+    }
+
     public Buraco getSlot(int selectedSlot) {
-       
-		return buracos[selectedSlot];
-	}
-    
+
+        return buracos[selectedSlot];
+    }
+
+    public TipoJogador getCurrentPlayer() {
+        return jogadorAtual;
+    }
+
+    private Buraco obterKallah(TipoJogador tipo) {
+        if (tipo == TipoJogador.JOGADOR_1) {
+
+            return buracos[6];
+        }
+
+        return buracos[13];
+    }
+
 }
-
-
-    //System.out.println(boundsInScreen);
-            //maxx - width/2 para obter  cordenadas x no meio do node
-            //maxy - height/2 para obter coordenada y no meio do node
-           //     for (ImageView slot : slotImages) {
-           //       Bounds boundsInScreen = slot.localToScene(slot.getBoundsInLocal()); 
-           //       System.out.println(boundsInScreen);
-           //     }
-            // double newX = (double)boundsInScreen.getMaxX() - (double)boundsInScreen.getWidth()/2;
-                    //System.out.println("i: "+i+"x: "+newX+"width: "+boundsInScreen.getWidth());
-                   // System.out.println(boundsInScreen);
-                    //--Bounds boundsInScreen = selectedSlot.getImageView().localToScene(selectedSlot.getImageView().getBoundsInLocal());
-                
-
-//buraco_0  X:615.6774291992188  Y257.0
-//buraco_1  X:525.6774291992188  Y257.0
-//buraco_2  X:435.6774139404297  Y257.0
-//buraco_3  X:345.6774139404297  Y257.0
-//buraco_4  X:255.6774139404297  Y257.0
-//buraco_5  X:165.6774139404297  Y257.0
-//buraco_6  X:76.26706314086914  Y298.0
-//buraco_7  X:165.6774139404297  Y367.0
-//buraco_8  X:255.6774139404297  Y367.0
-//buraco_9  X:345.6774139404297  Y367.0
-//buraco_10  X:435.6774139404297  Y367.0
-//buraco_11  X:525.6774291992188  Y367.0
-//buraco_12  X:615.6774291992188  Y367.0
-//buraco_13  X:706.2670593261719  Y298.0

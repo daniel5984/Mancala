@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mancala;
+package mancala.buracos;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.effect.DropShadow;

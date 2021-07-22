@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mancala;
+package mancala.buracos;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import mancala.TipoJogador;
 
 
 /**
@@ -42,13 +43,5 @@ public class Kallah extends Buraco{
 		return false;
 	}
 	
-    /**
-     *
-     * @return
-     */
-    public boolean isCPU() {
-		if(type == TipoJogador.COMPUTADOR)
-			return true;
-		return false;
-	}
+  
 }

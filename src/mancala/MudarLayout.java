@@ -12,30 +12,38 @@ import javafx.scene.layout.Pane;
 
 /**
  * Esta classe serve para mudar o layout dos fxml passando o nome do layout
+ *
  * @author DanielSilva
  */
 public class MudarLayout {
-  
+
     private String address;
-	
+
     /**
      *
      * @param address
      */
     public MudarLayout(String address) {
-		this.address = address;
-	}
+
+        this.address = address;
+    }
+
+    public MudarLayout(String address, boolean isServidor) {
+        this.address = address;
+
+    }
 
     /**
      *
      */
     public void load() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/" + address + ".fxml"));
-		try {
-			FxDemo.getMainStage().setScene(new Scene((Pane)loader.load()));
-		} catch (IOException e) {
-			e.printStackTrace();
-                        System.out.println(e.toString());
-		}
-	}
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/" + address + ".fxml"));
+        try {
+            System.out.println("Here");
+            Mancala.getMainStage().setScene(new Scene((Pane) loader.load()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.toString());
+        }
+    }
 }

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mancala.FxMenuController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlers.MenuController">
    <children>
       <ImageView fitHeight="485.0" fitWidth="786.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
          <image>
@@ -46,5 +48,13 @@
             <Insets top="200.0" />
          </StackPane.margin>
       </HBox>
+      <CheckBox fx:id="seServidorCheckBox" mnemonicParsing="false" text="Marca para ser servidor" textFill="WHITE" StackPane.alignment="BOTTOM_LEFT">
+         <StackPane.margin>
+            <Insets bottom="20.0" left="20.0" />
+         </StackPane.margin>
+         <font>
+            <Font name="Consolas Bold" size="14.0" />
+         </font>
+      </CheckBox>
    </children>
 </StackPane>

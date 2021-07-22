@@ -11,20 +11,9 @@ package mancala;
  */
 public enum TipoJogador {
 
-    /**
-     *
-     */
     JOGADOR_1,
 
-    /**
-     *
-     */
     JOGADOR_2,
 
-    /**
-     *
-     */
-    COMPUTADOR;
-	
-   
+	 
 }
