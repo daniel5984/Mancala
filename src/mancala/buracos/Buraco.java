@@ -5,6 +5,7 @@
  */
 package mancala.buracos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -14,14 +15,20 @@ import mancala.TipoJogador;
  *
  * @author DanielSilva
  */
-public class Buraco {
+public class Buraco implements Serializable {
 
     private Posicao posicao;
     private ArrayList<Semente> sementes;
 
+    public int getNumeroSementes() {
+
+        return sementes.size();
+    }
+
     private boolean isKallah;
 
-    private ImageView imageView;
+    // private ImageView imageView;
+    private String imageViewID;
     private Label label;
     private int id;
 
@@ -37,10 +44,16 @@ public class Buraco {
 
         //Saber a posição
         this.id = id;
-        this.imageView = imageView;
+        // this.imageView = imageView;
+        this.imageViewID = imageView.getId();
+        // System.out.println("ID -> "+imageView.getId());
         //this.label = label;
         this.isKallah = isBank;
         sementes = new ArrayList<Semente>();
+    }
+
+    public String getImageViewID() {
+        return imageViewID;
     }
 
     /**
@@ -91,7 +104,7 @@ public class Buraco {
      * @param marble
      * @param time
      */
-    public void addMarble(Semente marble, int time) {
+    public void adicionaSemente(Semente marble, int time) {
         sementes.add(marble);
         marble.moveTo(getPosition().getSimilarPosition(), time);
         //updateMarbleLabel();
@@ -104,7 +117,7 @@ public class Buraco {
      */
     public void addMarbles(Semente[] marbles, int time) {
         for (Semente marble : marbles) {
-            addMarble(marble, time);
+            adicionaSemente(marble, time);
         }
     }
 
@@ -117,10 +130,10 @@ public class Buraco {
         if (isKallah) {
             return false;
         }
-        if (tipo == TipoJogador.JOGADOR_1 && id < 6) {
+        if (tipo == TipoJogador.JOGADOR_SERVIDOR && id < 6) {
             return false;
         }
-        if (tipo == TipoJogador.JOGADOR_2 && id > 6) {
+        if (tipo == TipoJogador.JOGADOR_CLIENT && id > 6) {
             return false;
         }
         return true;
@@ -136,10 +149,9 @@ public class Buraco {
      *
      * @return
      */
-    public ImageView getImageView() {
-        return imageView;
-    }
-
+    // public ImageView getImageView() {
+    //     return imageView;
+    //}
     /**
      *
      * @return

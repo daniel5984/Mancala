@@ -6,7 +6,8 @@
 package controlers;
 
 //import java.awt.Color;
-
+import java.io.BufferedInputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,6 +18,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,6 +56,7 @@ import mancala.Info;
 import mancala.Mancala;
 import mancala.Tabuleiro;
 import mancala.TipoJogador;
+import mancala.infoRede;
 
 /**
  * FXML Controller class
@@ -60,7 +64,7 @@ import mancala.TipoJogador;
  * @author DanielSilva
  */
 public class TabuleiroController implements Initializable {
-
+    
     @FXML
     private ImageView buraco_6;
     @FXML
@@ -91,7 +95,7 @@ public class TabuleiroController implements Initializable {
     private ImageView buraco_13;
     @FXML
     private ImageView voltar_butao;
-
+    
     private HashMap<ImageView, Buraco> imagemBuracoMap;
     @FXML
     private ImageView avatar1;
@@ -118,106 +122,55 @@ public class TabuleiroController implements Initializable {
     private Label avatar1_label;
     @FXML
     private Label avatar2_label;
-
+    
     private static Boolean isServer = false;
-
+    
     private Thread thread1;
     private Thread thread2;
     private boolean pararThread = false;
     private Info info;
-
+    private boolean tabuleiroIniciado;
+    private int contador;
+    private Socket socket;
+ 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         centrarJanela(Mancala.getMainStage(), 800, 540);
+        info = Mancala.getInfo(); //Info objeto publico da class MenuControler
+        tabuleiroIniciado = false;
         seJogoComecou = false;
         this.imagensBuraco = new ImageView[]{buraco_0, buraco_1, buraco_2, buraco_3, buraco_4, buraco_5, buraco_6, buraco_7, buraco_8, buraco_9, buraco_10, buraco_11, buraco_12, buraco_13};
-
+        
         mudaCorAvatar(avatar1, "amarelo");
         mudaCorAvatar(avatar2, "azul");
-
+        
+        System.out.println("Cor AVATAR1 ->" + info.getAvatarServidorCor());
+        System.out.println("Cor AVATAR2 ->" + info.getAvatarClientCor());
+        
         imagemBuracoMap = new HashMap<>(); //Associar cada imagem do buraco a um objeto da class Buraco
 
         startGame();
-
-        info = info = Mancala.getInfo();
-
-        info = Mancala.getInfo(); //Info objeto publico da class MenuControler
-        avatar1_label.setText(info.getNomeJogador1());
-        avatar2_label.setText(info.getNomeJogador2());
-
-        if (isServer) {
-            correrServer();
+        
+        avatar1_label.setText(info.getNomeJogadorServidor());
+        avatar2_label.setText(info.getNomeJogadorClient());
+        
+        if (info.isServer()) {
+            //correrServer();
+            
         } else {
-            correrClient();
+       
+            //correrClient();
         }
-
+        
     }
-
-    private void correrServer() {
-
-        thread1 = new Thread() {
-            public void run() {
-                try {
-                    ServerSocket serverSocket = new ServerSocket(6666);
-                    System.out.println("Esperar conexões");
-                    Socket socket = serverSocket.accept();
-                    System.out.println("conexão estabelecida " + socket);
-
-                    ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
-                    ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-
-                    Info receberInfo = (Info) inStream.readObject();
-
-                    System.out.println("Jogador Atual?" + receberInfo.getNome(TipoJogador.JOGADOR_1));
-
-                    serverSocket.close();
-
-                } catch (IOException ex) {
-                    Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                while (!pararThread) {
-
-                    System.out.println("A correr");
-
-                }
-            }
-        };
-
-        thread1.start();
-
-    }
-
-    private void correrClient() {
-        thread2 = new Thread() {
-            public void run() {
-                try {
-                    Socket socket = new Socket("localhost", 6666);
-
-                    ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
-                    ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-
-                    outStream.writeObject(info);
-
-                    outStream.close();
-                    socket.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
-        };
-        thread2.start();
-
-    }
-
+    
+    
+    
     @FXML
     private void iniciar(MouseEvent event) {
         principalView.getChildren().remove(btn_iniciar);
         principalView.getChildren().remove(rectangulo);
-
         int[] coordx = new int[14];
         int[] coordy = new int[14];
         int cont = 0;
@@ -231,55 +184,53 @@ public class TabuleiroController implements Initializable {
             //System.out.println(img.getId()+"Minx"+b.getMinX()+"Miny"+b.getMinY()); 
             cont++;
         }
-        tabuleiro = new Tabuleiro(imagensBuraco, estado, avatar1, avatar2, coordx, coordy);
+        tabuleiro = new Tabuleiro(imagensBuraco, estado, info.getAvatarServidorCor(), info.getAvatarClientCor(), coordx, coordy);
         tabuleiro.popularSementes(sementesInicio);//Popular as sementes no stack pane sementesInicio para depois animar para 4 sementes para cada buraco
 
         for (int i = 0; i < imagensBuraco.length; i++) {
-            imagemBuracoMap.put(imagensBuraco[i], tabuleiro.getSlot(i));
+            imagemBuracoMap.put(imagensBuraco[i], tabuleiro.getSlot(i)); //Key -> ImageView Value -> Buraco
         }
-
+        tabuleiroIniciado = true;
     }
-
+    
     @FXML
     private void voltar(MouseEvent event) {
         new MudarLayout("Menu").load();
     }
-
+    
     @FXML
     private void rato_saiu(MouseEvent e) {
-        Buraco selectedSlot = imagemBuracoMap.get((ImageView) e.getSource());
-        mudaOpacidade(selectedSlot.getImageView(), 0.6f);
-
+        //Buraco selectedSlot = imagemBuracoMap.get((ImageView) e.getSource());
+        mudaOpacidade((ImageView) e.getSource(), 0.6f);
     }
-
+    
     @FXML
     private void rato_entrou(MouseEvent e) {
-        Buraco selectedSlot = imagemBuracoMap.get((ImageView) e.getSource());
-        mudaOpacidade(selectedSlot.getImageView(), 1.0f);
-
-        Bounds boundsInScreen = selectedSlot.getImageView().localToScene(selectedSlot.getImageView().getBoundsInLocal());
-
+        //Buraco selectedSlot = imagemBuracoMap.get((ImageView) e.getSource());
+        mudaOpacidade((ImageView) e.getSource(), 1.0f);
+        ImageView imgV = (ImageView) e.getSource();
+        // Bounds boundsInScreen = selectedSlot.getImageView().localToScene(selectedSlot.getImageView().getBoundsInLocal());
+        Bounds boundsInScreen = imgV.localToScene(imgV.getBoundsInLocal());
         double x = boundsInScreen.getMaxX() - boundsInScreen.getWidth() / 2 - 20;
         double y = boundsInScreen.getMaxY() - boundsInScreen.getHeight() / 2 - 20;
         // System.out.println(selectedSlot.getImageView().getId() + "  X:" + x + "  Y" + y);
 
     }
-
+    
     private void mudaOpacidade(ImageView node, float scale) {
         FadeTransition obj = new FadeTransition(Duration.millis(100), node);
         obj.setToValue(scale);
         obj.setCycleCount(1);
         obj.play();
     }
-
+    
     private void centrarJanela(Stage stage, double width, double height) {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - width) / 2);
         stage.setY((screenBounds.getHeight() - height) / 2);
     }
-
+    
     private void mudaCorAvatar(ImageView avatar, String cor) {
-
         try {
             URL path = this.getClass().getResource("../images/avatar_" + cor + ".png");
             InputStream stream = new FileInputStream(path.getPath());
@@ -287,35 +238,56 @@ public class TabuleiroController implements Initializable {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     private void startGame() {
-
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
-
+            
             @Override
             public void run() {
                 seJogoComecou = true;
             }
         }, 2 * 1000);
-
+        
     }
-
+    
     @FXML
     private void click_rato(MouseEvent event) {
-
+        
         if (!seJogoComecou) {
             return;
         }
 
+        //Verificar se o Buraco é o do jogador e processar a jogada
         Buraco buracoSelecionado = imagemBuracoMap.get((ImageView) event.getSource());
-
         if (tabuleiro.podeFazerTurno(buracoSelecionado.getId(), tabuleiro.getCurrentPlayer())) {
+
+            //Verificar o Index do buraco que o jogador clicou
+            ImageView imgV = (ImageView) event.getSource();
+            contador = 0;
+            for (ImageView img : imagensBuraco) {
+                if (imgV.equals(img)) {
+                    break;
+                }
+                contador++;
+            }
+            System.out.println("Contador -> " + contador);
+            
+            infoRede inf = new infoRede("Jogada", contador);
+            if (info.isServer()) {
+               
+            } else if (!info.isServer()) {
+               
+            }
+            
             tabuleiro.processarTurno(buracoSelecionado.getId());
         }
-
+        
     }
-
+    
 }
+
+

@@ -22,17 +22,17 @@
             <Font size="28.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="14.0" text="Client" textFill="WHITE">
+      <Label fx:id="isServerLabel" layoutX="14.0" layoutY="14.0" text="Client" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Text fill="WHITE" layoutX="286.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP" wrappingWidth="27.9140625">
+      <Text fx:id="ip_label" fill="WHITE" layoutX="286.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP" wrappingWidth="27.9140625">
          <font>
             <Font size="28.0" />
          </font>
       </Text>
-      <TextField fx:id="ip_input" layoutX="226.0" layoutY="282.0" promptText="IP do servidor" />
+      <TextField fx:id="ip_input" layoutX="225.0" layoutY="270.0" promptText="IP do servidor" />
       <Button fx:id="text_btn" layoutX="26.0" layoutY="347.0" mnemonicParsing="false" onMouseClicked="#teste_click" text="Testar Conexão" />
       <Button fx:id="iniciar_btn" layoutX="268.0" layoutY="347.0" mnemonicParsing="false" onMouseClicked="#comecar_click" text="Começar" />
       <Label fx:id="test_label" layoutX="133.0" layoutY="351.0" prefHeight="17.0" prefWidth="52.0" text="Label" textFill="WHITE" />

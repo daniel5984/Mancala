@@ -8,19 +8,49 @@ package mancala;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-
+import mancala.buracos.Posicao;
 
 /**
  *
  * @author DanielSilva
  */
-public  class Info implements Serializable {
-    private String nomeJogador1;
-    private String nomeJogador2;
-    private boolean isServer;
+public class Info implements Serializable {
 
-    public boolean isIsServer() {
+    private String nomeJogador_servidor;
+    private String nomeJogador_client;
+    private boolean isServer;
+    private String avatarServidorCor;
+    private String avatarClientCor;
+    private int Buracosinfo[];
+
+    public int[] getBuracosinfo() {
+        return Buracosinfo;
+    }
+
+    public void setBuracosinfo(int[] Buracosinfo) {
+        this.Buracosinfo = Buracosinfo;
+        for (int i=0;i<Buracosinfo.length;i++) {
+        System.out.println("Buraco ->"+i+" com "+this.Buracosinfo[i]+" sementes.");
+    }
+    }
+
+    public String getAvatarServidorCor() {
+        return avatarServidorCor;
+    }
+
+    public void setAvatarServidorCor(String avatarServidorCor) {
+        this.avatarServidorCor = avatarServidorCor;
+    }
+
+    public String getAvatarClientCor() {
+        return avatarClientCor;
+    }
+
+    public void setAvatarClientCor(String avatarClientCor) {
+        this.avatarClientCor = avatarClientCor;
+    }
+
+    public boolean isServer() {
         return isServer;
     }
 
@@ -28,31 +58,30 @@ public  class Info implements Serializable {
         this.isServer = isServer;
     }
 
-    public String getNomeJogador1() {
-        return nomeJogador1;
+    public String getNomeJogadorServidor() {
+        return nomeJogador_servidor;
     }
 
-    public void setNomeJogador1(String nomeJogador1) {
-        this.nomeJogador1 = nomeJogador1;
+    public void setNomeJogadorServidor(String nomeJogador1) {
+        this.nomeJogador_servidor = nomeJogador1;
     }
 
-    public String getNomeJogador2() {
-        return nomeJogador2;
+    public String getNomeJogadorClient() {
+        return nomeJogador_client;
     }
 
-    public void setNomeJogador2(String nomeJogador2) {
-        this.nomeJogador2 = nomeJogador2;
+    public void setNomeJogadorClient(String nomeJogador2) {
+        this.nomeJogador_client = nomeJogador2;
     }
+
     public String getNome(TipoJogador type) {
-		if(type == TipoJogador.JOGADOR_1)
-			return nomeJogador1;
-		if(type == TipoJogador.JOGADOR_2)
-			return nomeJogador2;
-		return "CPU";
-	}
+        if (type == TipoJogador.JOGADOR_SERVIDOR) {
+            return nomeJogador_servidor;
+        }
+        if (type == TipoJogador.JOGADOR_CLIENT) {
+            return nomeJogador_client;
+        }
+        return "CPU";
+    }
 
-  
-
-
-   
 }

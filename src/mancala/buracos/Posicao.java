@@ -1,10 +1,12 @@
 package mancala.buracos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author DanielSilva
  */
-public class Posicao {
+public class Posicao implements Serializable{
 
 	private int y;
 	private int x;
@@ -44,7 +46,7 @@ public class Posicao {
      * @return
      */
     public Posicao getSimilarPosition() {
-		int range = 20;
+		int range = 30;
 		int newX = (int) (x + ((Math.random() * range) - (range/2)));
 		int newY = (int) (y + ((Math.random() * range) - (range/2)));
 		return new Posicao(newX, newY);

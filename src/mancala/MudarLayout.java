@@ -39,7 +39,7 @@ public class MudarLayout {
     public void load() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/" + address + ".fxml"));
         try {
-            System.out.println("Here");
+            System.out.println("Mudar Layout para -> "+address);
             Mancala.getMainStage().setScene(new Scene((Pane) loader.load()));
         } catch (IOException e) {
             e.printStackTrace();

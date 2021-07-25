@@ -38,7 +38,7 @@ public class Kallah extends Buraco{
      * @return
      */
     public boolean isPlayer() {
-		if(type == TipoJogador.JOGADOR_1 || type == TipoJogador.JOGADOR_2)
+		if(type == TipoJogador.JOGADOR_SERVIDOR || type == TipoJogador.JOGADOR_CLIENT)
 			return true;
 		return false;
 	}

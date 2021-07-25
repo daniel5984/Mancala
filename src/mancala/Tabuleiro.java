@@ -5,22 +5,28 @@
  */
 package mancala;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import mancala.buracos.Posicao;
 import mancala.buracos.Semente;
 import mancala.buracos.Buraco;
 import mancala.buracos.Kallah;
 import java.util.Timer;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
+import javax.imageio.ImageIO;
 
 /**
  * Aqui está representado o campo de jogo
  *
  * @author DanielSilva
  */
-public class Tabuleiro implements Serializable{
+public class Tabuleiro implements Serializable {
 
     boolean ganhou;
     int jogadores[];
@@ -32,22 +38,22 @@ public class Tabuleiro implements Serializable{
     private Label status;
     private Timer tempo;
     private boolean seJogoAcabou;
-    private ImageView avatarJogador1;
-    private ImageView avatarJogador2;
+    //private ImageView avatarJogador1;
+    //private ImageView avatarJogador2;
 
     /**
      *
      * @param slotImages
      * @param status
-     * @param avatarJogador1
-     * @param avatarJogador2
+     * @param avatarJogadorServidor
+     * @param avatarJogadorClient
      */
-    public Tabuleiro(ImageView[] slotImages, Label status, ImageView avatarJogador1, ImageView avatarJogador2, int[] coordx, int[] coordy) {
+    public Tabuleiro(ImageView[] slotImages, Label status, String avatarJogadorServidor, String avatarJogadorClient, int[] coordx, int[] coordy) {
         this.buracos = obterBuracos(slotImages, coordx, coordy);
-        this.jogadorAtual = TipoJogador.JOGADOR_1;
+        this.jogadorAtual = TipoJogador.JOGADOR_SERVIDOR;
         this.status = status;
-        this.avatarJogador1 = avatarJogador1;
-        this.avatarJogador2 = avatarJogador2;
+        //Mancala.getInfo()..setAvatarJogadorServidor(avatarJogadorServidor); 
+        //Mancala.getInfo().getAvatar().setAvatarJogadorServidor(avatarJogadorClient);         
         this.tempo = new Timer();
         this.seJogoAcabou = false;
         atualizaStatusTurno(false);
@@ -65,11 +71,11 @@ public class Tabuleiro implements Serializable{
             // Bounds boundsInScreen = slotImages[i].localToScene(slotImages[i].getBoundsInLocal());
             Posicao pos = new Posicao(coordx[i], coordy[i]);
             if (i == 6) {
-                buracoTemp[i] = new Kallah(pos, true, TipoJogador.JOGADOR_1, slotImages[i], i);
+                buracoTemp[i] = new Kallah(pos, true, TipoJogador.JOGADOR_SERVIDOR, slotImages[i], i);
                 continue;
             }
             if (i == 13) {
-                buracoTemp[i] = new Kallah(pos, true, TipoJogador.JOGADOR_2, slotImages[i], i);
+                buracoTemp[i] = new Kallah(pos, true, TipoJogador.JOGADOR_CLIENT, slotImages[i], i);
                 continue;
             }
             buracoTemp[i] = new Buraco(pos, false, slotImages[i], i);
@@ -85,10 +91,10 @@ public class Tabuleiro implements Serializable{
         if (buracoAtual.isEmpty()) {
             return false;
         }
-        if (tipoJogador == TipoJogador.JOGADOR_1 && buracoSelecionado < 6) {
+        if (tipoJogador == TipoJogador.JOGADOR_SERVIDOR && buracoSelecionado < 6) {
             return false;
         }
-        if (tipoJogador == TipoJogador.JOGADOR_2 && buracoSelecionado > 6) {
+        if (tipoJogador == TipoJogador.JOGADOR_CLIENT && buracoSelecionado > 6) {
             return false;
         }
 
@@ -103,17 +109,20 @@ public class Tabuleiro implements Serializable{
 
         //	MarbleColor[] colors = MarbleColor.values();
         for (Buraco buraco : buracos) {
+
             if (buraco.isBuracoKallah()) {
                 continue;
             }
             for (int i = 0; i < 4; i++) {
                 //int colorIndex = (int) (Math.random() * colors.length);
 
-                Semente currentMarble = new Semente();
+                Semente sementeAtual = new Semente();
 
-                sementesInicio.getChildren().add(currentMarble.getImageView());
-                buraco.addMarble(currentMarble, 3);
+                sementesInicio.getChildren().add(sementeAtual.getImageView());//Adiciona a semente ao tabuleiro
+                buraco.adicionaSemente(sementeAtual, 3);
+
             }
+
         }
 
     }
@@ -148,6 +157,9 @@ public class Tabuleiro implements Serializable{
             // updatePlayerAvatars();
             atualizaStatusTurno(podeJogarDenovo);
         }
+        
+      //  obterInfoBuracos();
+        
     }
 
     private boolean verificarVencedor(int[] buracosJogador1, int[] buracosJogador2) {
@@ -161,12 +173,12 @@ public class Tabuleiro implements Serializable{
     }
 
     private void processarQuemGanha(int[] buracosJogador1, int[] buracosJogador2) {
-        limparSementes(TipoJogador.JOGADOR_1, buracosJogador1);
-        limparSementes(TipoJogador.JOGADOR_2, buracosJogador2);
+        limparSementes(TipoJogador.JOGADOR_SERVIDOR, buracosJogador1);
+        limparSementes(TipoJogador.JOGADOR_CLIENT, buracosJogador2);
 
-        TipoJogador vencedor = TipoJogador.JOGADOR_1;
-        if (obterKallah(TipoJogador.JOGADOR_2).getMarbleCount() > obterKallah(TipoJogador.JOGADOR_1).getMarbleCount()) {
-            vencedor = TipoJogador.JOGADOR_2;
+        TipoJogador vencedor = TipoJogador.JOGADOR_SERVIDOR;
+        if (obterKallah(TipoJogador.JOGADOR_CLIENT).getMarbleCount() > obterKallah(TipoJogador.JOGADOR_SERVIDOR).getMarbleCount()) {
+            vencedor = TipoJogador.JOGADOR_CLIENT;
         }
 
         status.setText(Mancala.getInfo().getNome(vencedor) + " Ganhou!");
@@ -188,13 +200,13 @@ public class Tabuleiro implements Serializable{
     }
 
     private TipoJogador obterJogadorOposto(TipoJogador tipo) {
-        if (tipo == TipoJogador.JOGADOR_1) {
-            return TipoJogador.JOGADOR_2;
+        if (tipo == TipoJogador.JOGADOR_SERVIDOR) {
+            return TipoJogador.JOGADOR_CLIENT;
         }
-        if (tipo == TipoJogador.JOGADOR_2) {
-            return TipoJogador.JOGADOR_1;
+        if (tipo == TipoJogador.JOGADOR_CLIENT) {
+            return TipoJogador.JOGADOR_SERVIDOR;
         }
-        return TipoJogador.JOGADOR_1;
+        return TipoJogador.JOGADOR_SERVIDOR;
     }
 
     public Buraco getSlot(int selectedSlot) {
@@ -207,12 +219,26 @@ public class Tabuleiro implements Serializable{
     }
 
     private Buraco obterKallah(TipoJogador tipo) {
-        if (tipo == TipoJogador.JOGADOR_1) {
+        if (tipo == TipoJogador.JOGADOR_SERVIDOR) {
 
             return buracos[6];
         }
 
         return buracos[13];
+    }
+
+    private void obterInfoBuracos() {
+        int index = 0;
+        int infoBuraco[];
+        infoBuraco = new int[buracos.length];
+
+        for (Buraco buraco : buracos) {
+            infoBuraco[index] = buraco.getNumeroSementes();
+            index++;
+        }
+        
+       // Mancala.getInfo().setBuracosinfo(infoBuraco);
+
     }
 
 }

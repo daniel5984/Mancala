@@ -51,7 +51,7 @@ public class Turno {
                     processarCaptura(currentIndex);
                 }
             }
-            currentSlotObject.addMarble(sementes[sementeAtual], 1);
+            currentSlotObject.adicionaSemente(sementes[sementeAtual], 1);
             sementeAtual++;
             currentIndex++;
         }
@@ -74,7 +74,7 @@ public class Turno {
     }
 
     private Buraco obterKallah() {
-        if (tipoJogador == TipoJogador.JOGADOR_1) {
+        if (tipoJogador == TipoJogador.JOGADOR_SERVIDOR) {
             return buracos[13];
            
         }
