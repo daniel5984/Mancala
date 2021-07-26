@@ -16,11 +16,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import mancala.Info;
 import mancala.Jogador;
 import mancala.Mancala;
@@ -72,6 +75,20 @@ public class PrepararController implements Initializable {
             isServerLabel.setText("Client");
         }
 
+        if (info.isServer()) {
+            centrarJanela(Mancala.getMainStage(), -200, 540);
+
+        } else {
+            centrarJanela(Mancala.getMainStage(), 1200, 540);
+
+        }
+
+    }
+
+    private void centrarJanela(Stage stage, double width, double height) {
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((screenBounds.getWidth() - width) / 2);
+        stage.setY((screenBounds.getHeight() - height) / 2);
     }
 
     @FXML
@@ -81,32 +98,17 @@ public class PrepararController implements Initializable {
 
     @FXML
     private void comecar_click(MouseEvent event) {
-       
-        
+        //Caso Seja servidor ou Client
+        if (nome_input.textProperty().isEmpty().get()) {
+            System.out.println("O nome não tem texto em " + info.isServer());
+        } else if (!nome_input.textProperty().isEmpty().get() && info.isServer()) {
 
-        //Caso Seja servidor
-        if (nome_input.textProperty().isEmpty().get()&info.isServer()) {
-            System.out.println("O nome não tem texto");
-            info.setNomeJogadorServidor("Server");
-            info.setAvatarServidorCor("amarelo");
-        } else if(!nome_input.textProperty().isEmpty().get()&info.isServer()){
-            info.setNomeJogadorServidor(nome_input.getText());
-            info.setAvatarServidorCor("amarelo");// DEIXAR JOGADOR ESCOLHER
-        }
-        
-        //Caso seja Client
-        if(nome_input.textProperty().isEmpty().get()&!info.isServer()){
-            System.out.println("O nome não tem texto");
-            info.setNomeJogadorClient("Client"); 
-            info.setAvatarClientCor("azul");
-        }else if(!nome_input.textProperty().isEmpty().get()&!info.isServer()){
-            info.setNomeJogadorClient(nome_input.getText());
-            info.setAvatarClientCor("azul");// DEIXAR JOGADOR ESCOLHER
-        }
-        
+            info.setJogador1(nome_input.getText());
 
-        
-        
+        } else if (!nome_input.textProperty().isEmpty().get() && !info.isServer()) {
+            info.setJogador2(nome_input.getText());
+        }
+
         new MudarLayout("Tabuleiro").load();
     }
 }

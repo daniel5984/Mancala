@@ -14,6 +14,7 @@ import mancala.buracos.Semente;
 import mancala.buracos.Buraco;
 import mancala.buracos.Kallah;
 import java.util.Timer;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -36,11 +37,14 @@ public class Tabuleiro implements Serializable {
     private Buraco[] buracos;
     private TipoJogador jogadorAtual;
     private Label status;
+    private Label avatar1_label;
+    private Label avatar2_label;
     private Timer tempo;
     private boolean seJogoAcabou;
+    private boolean isServer;
+
     //private ImageView avatarJogador1;
     //private ImageView avatarJogador2;
-
     /**
      *
      * @param slotImages
@@ -48,15 +52,19 @@ public class Tabuleiro implements Serializable {
      * @param avatarJogadorServidor
      * @param avatarJogadorClient
      */
-    public Tabuleiro(ImageView[] slotImages, Label status, String avatarJogadorServidor, String avatarJogadorClient, int[] coordx, int[] coordy) {
+    public Tabuleiro(ImageView[] slotImages, Label status, int[] coordx, int[] coordy, boolean isServer, Label avatar1_label, Label avatar2_label) {
         this.buracos = obterBuracos(slotImages, coordx, coordy);
         this.jogadorAtual = TipoJogador.JOGADOR_SERVIDOR;
         this.status = status;
+        this.isServer = isServer;
+        this.avatar1_label = avatar1_label;
+        this.avatar2_label = avatar2_label;
         //Mancala.getInfo()..setAvatarJogadorServidor(avatarJogadorServidor); 
         //Mancala.getInfo().getAvatar().setAvatarJogadorServidor(avatarJogadorClient);         
         this.tempo = new Timer();
         this.seJogoAcabou = false;
         atualizaStatusTurno(false);
+
     }
 
     private Buraco[] obterBuracos(ImageView[] slotImages, int[] coordx, int[] coordy) {
@@ -91,12 +99,19 @@ public class Tabuleiro implements Serializable {
         if (buracoAtual.isEmpty()) {
             return false;
         }
-        if (tipoJogador == TipoJogador.JOGADOR_SERVIDOR && buracoSelecionado < 6) {
+        if (tipoJogador == TipoJogador.JOGADOR_SERVIDOR && buracoSelecionado < 6 ) {
             return false;
         }
         if (tipoJogador == TipoJogador.JOGADOR_CLIENT && buracoSelecionado > 6) {
             return false;
         }
+         if (tipoJogador == TipoJogador.JOGADOR_SERVIDOR && !Mancala.getInfo().isServer()) {
+            return false;
+        }
+         if (tipoJogador == TipoJogador.JOGADOR_CLIENT && Mancala.getInfo().isServer()) {
+            return false;
+        }
+    
 
         return true;
     }
@@ -155,11 +170,16 @@ public class Tabuleiro implements Serializable {
             processarQuemGanha(buracosJogador1, buracosJogador2);
         } else {
             // updatePlayerAvatars();
-            atualizaStatusTurno(podeJogarDenovo);
+            Platform.runLater(
+                    () -> {
+                        // Update UI here.
+                        atualizaStatusTurno(podeJogarDenovo);
+                    }
+            );
+
         }
-        
-      //  obterInfoBuracos();
-        
+
+        //  obterInfoBuracos();
     }
 
     private boolean verificarVencedor(int[] buracosJogador1, int[] buracosJogador2) {
@@ -197,6 +217,7 @@ public class Tabuleiro implements Serializable {
             defaultText = " tem um turno extra por acertar ultima semente no Kallah";
         }
         status.setText(Mancala.getInfo().getNome(jogadorAtual) + defaultText);
+        System.out.println(Mancala.getInfo().getNome(jogadorAtual) + defaultText);
     }
 
     private TipoJogador obterJogadorOposto(TipoJogador tipo) {
@@ -236,8 +257,28 @@ public class Tabuleiro implements Serializable {
             infoBuraco[index] = buraco.getNumeroSementes();
             index++;
         }
-        
-       // Mancala.getInfo().setBuracosinfo(infoBuraco);
+
+        // Mancala.getInfo().setBuracosinfo(infoBuraco);
+    }
+
+    public void atualizarLabelStatus(String s, int num) {
+
+        Platform.runLater(
+                () -> {
+                    // Update UI here.
+
+                    if (num == 1) {
+
+                        Mancala.getInfo().setJogador1(s);
+                        avatar1_label.setText(Mancala.getInfo().getJogador1());
+                    } else if (num == 2) {
+                        Mancala.getInfo().setJogador2(s);
+                        avatar2_label.setText(Mancala.getInfo().getJogador2());
+                    }
+                    //Atualizar Status
+                    atualizaStatusTurno(false);
+                }
+        );
 
     }
 

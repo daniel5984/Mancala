@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author DanielSilva
  */
-public class infoRede implements Serializable {
+public class infoRedeLadoServer implements Serializable {
 
     private String tipo;
     private int numeroBuraco;
@@ -29,7 +29,7 @@ public class infoRede implements Serializable {
         return numeroBuraco;
     }
 
-    public infoRede(String tipo, int numeroBuraco, int IDBuraco) {
+    public infoRedeLadoServer(String tipo, int numeroBuraco, int IDBuraco) {
         this.tipo = tipo;
         this.numeroBuraco = numeroBuraco;
         this.IDBuraco = IDBuraco;

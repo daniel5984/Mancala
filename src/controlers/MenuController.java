@@ -44,9 +44,7 @@ public class MenuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Info info_Inicio = new Info();
-        Mancala.setInfo(info_Inicio);
-        info = Mancala.getInfo();
+
     }
 
     @FXML
@@ -60,13 +58,17 @@ public class MenuController implements Initializable {
     @FXML
     private void iniciarClick(MouseEvent event) {
 
-        if (info == null) {
-            System.out.println("Info é Null");
-        }
+    
         if (seServidorCheckBox.selectedProperty().get()) {
-            info.setIsServer(true);
+            Info info_Inicio = new Info(true);
+            Mancala.setInfo(info_Inicio);
+            //info = Mancala.getInfo();
+            // info.setIsServer(true);
         } else {
-            info.setIsServer(false);
+            Info info_Inicio = new Info(false);
+            Mancala.setInfo(info_Inicio);
+            // info = Mancala.getInfo();
+            // info.setIsServer(false);
         }
 
         System.out.println("É servidor (CheckBox)->  " + seServidorCheckBox.selectedProperty().get());

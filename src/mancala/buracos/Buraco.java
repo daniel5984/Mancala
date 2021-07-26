@@ -5,9 +5,17 @@
  */
 package mancala.buracos;
 
+import controlers.TabuleiroController;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import mancala.TipoJogador;
 
@@ -31,6 +39,7 @@ public class Buraco implements Serializable {
     private String imageViewID;
     private Label label;
     private int id;
+    private ImageView imageview;
 
     /**
      *
@@ -44,12 +53,33 @@ public class Buraco implements Serializable {
 
         //Saber a posição
         this.id = id;
+        System.out.println("O ID do buraco é -> " + this.id);
         // this.imageView = imageView;
         this.imageViewID = imageView.getId();
         // System.out.println("ID -> "+imageView.getId());
         //this.label = label;
         this.isKallah = isBank;
+        this.imageview = imageView;
         sementes = new ArrayList<Semente>();
+        if (id < 6) { //É do Client
+            mudaCorBuraco(this.imageview, "azul");
+        }
+        if (id > 6 && id < 13) {
+            mudaCorBuraco(this.imageview, "amarelo");
+        }
+    }
+
+    private void mudaCorBuraco(ImageView buraco, String cor) {
+        try {
+            URL path = this.getClass().getResource("../../images/buraco_" + cor + ".png");
+            InputStream stream = new FileInputStream(path.getPath());
+            System.out.println("FicheiroStream -> " + stream);
+            buraco.setImage(new Image(stream));
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public String getImageViewID() {
