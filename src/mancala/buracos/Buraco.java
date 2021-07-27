@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import mancala.TipoJogador;
 
 /**
+ * Esta Class representa cada buraco do Jogo
  *
  * @author DanielSilva
  */
@@ -27,15 +28,7 @@ public class Buraco implements Serializable {
 
     private Posicao posicao;
     private ArrayList<Semente> sementes;
-
-    public int getNumeroSementes() {
-
-        return sementes.size();
-    }
-
     private boolean isKallah;
-
-    // private ImageView imageView;
     private String imageViewID;
     private Label label;
     private int id;
@@ -43,37 +36,50 @@ public class Buraco implements Serializable {
 
     /**
      *
-     * @param position
-     * @param isBank
-     * @param imageView
-     * @param id
+     * @return retorna o numero de sementes que o buraco tem atualmente
      */
-    public Buraco(Posicao position, boolean isBank, ImageView imageView, int id) {
-        this.posicao = position;
+    public int getNumeroSementes() {
 
-        //Saber a posição
+        return sementes.size();
+    }
+
+    /**
+     * Este é o construtor da Class Buraco onde faz distinção dos jogadores por
+     * cor
+     *
+     * @param position posição do Buraco
+     * @param isKallah Se é um Kallah
+     * @param imageView A imageView do Buraco
+     * @param id O ID do buraco
+     */
+    public Buraco(Posicao position, boolean isKallah, ImageView imageView, int id) {
+        this.posicao = position;
         this.id = id;
-        System.out.println("O ID do buraco é -> " + this.id);
-        // this.imageView = imageView;
         this.imageViewID = imageView.getId();
-        // System.out.println("ID -> "+imageView.getId());
-        //this.label = label;
-        this.isKallah = isBank;
+        this.isKallah = isKallah;
         this.imageview = imageView;
         sementes = new ArrayList<Semente>();
-        if (id < 6) { //É do Client
+
+        if (id < 6) {//É do Client(Jogador2)
             mudaCorBuraco(this.imageview, "azul");
         }
-        if (id > 6 && id < 13) {
+        if (id > 6 && id < 13) {//É Server(Jogador1)
             mudaCorBuraco(this.imageview, "amarelo");
         }
     }
 
+    /**
+     * Este metodo Muda a cor do Buraco conforme o ID
+     *
+     * @param buraco a ImageView do buraco para alterar a imagem
+     * @param cor a cor que existem 6 imagens criadas onde estão organizadas de
+     * forma a poder automatizar a sua escolha através do nome da cor
+     */
     private void mudaCorBuraco(ImageView buraco, String cor) {
         try {
             URL path = this.getClass().getResource("../../images/buraco_" + cor + ".png");
             InputStream stream = new FileInputStream(path.getPath());
-            System.out.println("FicheiroStream -> " + stream);
+            //System.out.println("FicheiroStream -> " + stream);
             buraco.setImage(new Image(stream));
 
         } catch (FileNotFoundException ex) {
@@ -82,13 +88,17 @@ public class Buraco implements Serializable {
 
     }
 
+    /**
+     *
+     * @return retorna o ID da imagem
+     */
     public String getImageViewID() {
         return imageViewID;
     }
 
     /**
      *
-     * @return
+     * @return retorna true se o buraco for um Kallah e false se não for
      */
     public boolean isBuracoKallah() {
         return isKallah;
@@ -96,7 +106,7 @@ public class Buraco implements Serializable {
 
     /**
      *
-     * @return
+     * @return retorna o numero de sementes neste buraco
      */
     public int getMarbleCount() {
         return sementes.size();
@@ -104,7 +114,7 @@ public class Buraco implements Serializable {
 
     /**
      *
-     * @return
+     * @return retorna a posição desde buraco
      */
     public Posicao getPosition() {
         return posicao;
@@ -112,51 +122,50 @@ public class Buraco implements Serializable {
 
     /**
      *
-     * @return
+     * @return retorna true se o buraco estiver Vazio
      */
-    public boolean isEmpty() {
+    public boolean isBuracoVazio() {
         return sementes.isEmpty();
     }
 
     /**
      *
-     * @return
+     * @return retorna um array de Sementes vazio
      */
-    public Semente[] clearMarbels() {
-        Semente[] marblesArray = sementes.toArray(new Semente[sementes.size()]);
+    public Semente[] limparTodasAsSementes() {
+        Semente[] arrayDeSementes = sementes.toArray(new Semente[sementes.size()]);
         sementes.clear();
-        //updateMarbleLabel();
-        return marblesArray;
+        return arrayDeSementes;
     }
 
     /**
      *
-     * @param marble
-     * @param time
+     * @param semente A semente que queremos adicionar
+     * @param tempo o tempo que demora a fazer a transição(Animação)
      */
-    public void adicionaSemente(Semente marble, int time) {
-        sementes.add(marble);
-        marble.moveTo(getPosition().getSimilarPosition(), time);
-        //updateMarbleLabel();
+    public void adicionaSemente(Semente semente, int tempo) {
+        sementes.add(semente);
+        semente.moveTo(getPosition().obterPosicaoSemelhante(), tempo);
     }
 
     /**
      *
-     * @param marbles
-     * @param time
+     * @param sementes um array de sementes
+     * @param tempo o tempo que demora a fazer a transição(Animação)
      */
-    public void addMarbles(Semente[] marbles, int time) {
-        for (Semente marble : marbles) {
-            adicionaSemente(marble, time);
+    public void adicionaSementes(Semente[] sementes, int tempo) {
+        for (Semente marble : sementes) {
+            adicionaSemente(marble, tempo);
         }
     }
 
     /**
+     * Verifica se o buraco está no lado deste jogador ou no lado do inimigo
      *
-     * @param tipo
-     * @return
+     * @param tipo de jogador
+     * @return se for true está no meu lado senão está no lado do inimigo
      */
-    public boolean isMySide(TipoJogador tipo) {
+    public boolean isMeuLado(TipoJogador tipo) {
         if (isKallah) {
             return false;
         }
@@ -169,22 +178,10 @@ public class Buraco implements Serializable {
         return true;
     }
 
-//	public void updateMarbleLabel() {
-//		label.setText("" + getMarbleCount());
-//	}
-//	public Label getLabel() {
-//		return label;
-//	}
     /**
+     * Obter o Id do Buraco
      *
-     * @return
-     */
-    // public ImageView getImageView() {
-    //     return imageView;
-    //}
-    /**
-     *
-     * @return
+     * @return ID do buraco
      */
     public int getId() {
         return id;

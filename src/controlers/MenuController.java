@@ -19,7 +19,8 @@ import mancala.Mancala;
 import mancala.MudarLayout;
 
 /**
- * FXML Controller class
+ * FXML Controller class interface de seleção do username e no caso do client de
+ * escolher o IP
  *
  * @author DanielSilva
  */
@@ -37,16 +38,18 @@ public class MenuController implements Initializable {
     private Info info;
 
     /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
+     * Este controler é responsável pelo o layout do Menu
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 
+    /**
+     * Quando o Utilizador deseja sair
+     *
+     * @param event evento do rato
+     */
     @FXML
     private void sairClick(MouseEvent event) {
         System.out.println("Sair");
@@ -55,29 +58,33 @@ public class MenuController implements Initializable {
 
     }
 
+    /**
+     * Aqui ao clicar em iniciar no layout , se o jogador tiver clicado na
+     * checkbox para saber se é servidor é Criada uma instancia da Class info
+     * que contém informação que possa ser acessada de modo global Static nas
+     * outras classes
+     *
+     *
+     * @param event evento do mouse
+     */
     @FXML
     private void iniciarClick(MouseEvent event) {
-
-    
         if (seServidorCheckBox.selectedProperty().get()) {
             Info info_Inicio = new Info(true);
             Mancala.setInfo(info_Inicio);
-            //info = Mancala.getInfo();
-            // info.setIsServer(true);
         } else {
             Info info_Inicio = new Info(false);
             Mancala.setInfo(info_Inicio);
-            // info = Mancala.getInfo();
-            // info.setIsServer(false);
         }
-
         System.out.println("É servidor (CheckBox)->  " + seServidorCheckBox.selectedProperty().get());
-
-        //System.out.println("iniciar");
-        new MudarLayout("PrepararClient").load();
+        new MudarLayout("PrepararJogador").load();
 
     }
 
+    /**
+     *
+     * @param event evento do mouse
+     */
     @FXML
     private void top10Click(MouseEvent event) {
         System.out.println("top10");

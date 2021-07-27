@@ -9,6 +9,7 @@ import mancala.buracos.Semente;
 import mancala.buracos.Buraco;
 
 /**
+ * Esta class contem vários metodos importantes quando se faz cada turno
  *
  * @author DanielSilva
  */
@@ -18,46 +19,65 @@ public class Turno {
     private int buracoSelecionado;
     private TipoJogador tipoJogador;
 
+    /**
+     * Construtor do turno
+     *
+     * @param buracos um array de buracos
+     * @param buracoSelecionado o buraco que clickei
+     * @param tipoJogador o tipo de jogador que sou
+     */
     public Turno(Buraco[] buracos, int buracoSelecionado, TipoJogador tipoJogador) {
         this.buracoSelecionado = buracoSelecionado;
         this.buracos = buracos;
         this.tipoJogador = tipoJogador;
     }
 
+    /**
+     * O run faz toda a logica de processar a captura de sementes
+     *
+     * @return retorna true se pode jogar denovo, quando a utima semente cai em
+     * um kallah
+     */
     public boolean run() {
         Buraco buracoAtual = buracos[buracoSelecionado];
-        Semente[] sementes = buracoAtual.clearMarbels();
-        //buracoAtual.updateMarbleLabel();
+        Semente[] sementes = buracoAtual.limparTodasAsSementes();
+
         int sementeAtual = 0;
-        int currentIndex = buracoSelecionado + 1;
+        int indexAtual = buracoSelecionado + 1;
         boolean podeJogarDenovo = false;
         while (sementeAtual < sementes.length) {
-            if (currentIndex == 14) {
-                currentIndex = 0;
+            if (indexAtual == 14) {
+                indexAtual = 0;
             }
-            Buraco currentSlotObject = buracos[currentIndex];
-            if (currentSlotObject.isBuracoKallah() && !verificaSeKallah(currentIndex)) {
-                currentIndex++;
+            Buraco objBuracoAtual = buracos[indexAtual];
+            if (objBuracoAtual.isBuracoKallah() && !verificaSeKallah(indexAtual)) {
+                indexAtual++;
                 continue;
             }
-            if (!currentSlotObject.isBuracoKallah() && isLastMarbleInTurn(sementeAtual, sementes.length)) {
-                processarCaptura(currentIndex);
+            if (!objBuracoAtual.isBuracoKallah() && seUltimaSemente(sementeAtual, sementes.length)) {//Se for ultima semente e não for kallah
+                processarCaptura(indexAtual);
             }
-            if (isLastMarbleInTurn(sementeAtual, sementes.length)) {
-                if (currentSlotObject.isBuracoKallah() && verificaSeKallah(currentIndex)) {
+            if (seUltimaSemente(sementeAtual, sementes.length)) { //Se for a ultima semente
+                if (objBuracoAtual.isBuracoKallah() && verificaSeKallah(indexAtual)) { //Se for ultima semente e cair em um kallah pode jogar de novo
                     podeJogarDenovo = true;
                 }
-                if (!currentSlotObject.isBuracoKallah()) {
-                    processarCaptura(currentIndex);
+                if (!objBuracoAtual.isBuracoKallah()) {
+                    processarCaptura(indexAtual);
                 }
             }
-            currentSlotObject.adicionaSemente(sementes[sementeAtual], 1);
+            objBuracoAtual.adicionaSemente(sementes[sementeAtual], 1);
             sementeAtual++;
-            currentIndex++;
+            indexAtual++;
         }
         return podeJogarDenovo;
     }
 
+    /**
+     * Verifica se o buraco é kallah
+     *
+     * @param buraco O id do buraco
+     * @return retorna true se for kalla e falso se não for
+     */
     private boolean verificaSeKallah(int buraco) {
         int kallahID = obterKallah().getId();
         if (buraco == kallahID) {
@@ -66,38 +86,62 @@ public class Turno {
         return false;
     }
 
-    private boolean isLastMarbleInTurn(int currentMarble, int totalMarbles) {
-        if (currentMarble == totalMarbles - 1) {
+    /**
+     * Verifica se esta é a ultima semente
+     *
+     * @param sementeAtual
+     * @param totalSementes o número total de sementes desta jogada
+     * @return Se for a ultima semente retorna true, senão retorna false
+     */
+    private boolean seUltimaSemente(int sementeAtual, int totalSementes) {
+        if (sementeAtual == totalSementes - 1) {
             return true;
         }
         return false;
     }
 
+    /**
+     *
+     * @return o Buraco kallah confrome o tipo de jogador
+     */
     private Buraco obterKallah() {
         if (tipoJogador == TipoJogador.JOGADOR_SERVIDOR) {
             return buracos[13];
-           
+
         }
-         return buracos[6];
+        return buracos[6];
     }
 
+    /**
+     * Verifica se o buraco é vazio ou se está no meu lado (tipodeJogador)atual
+     * Caso esteja no meu lado e o buraco seja vazio fazemos a captura das
+     * sementes do lado oposto
+     *
+     * @param buracoAtual_index
+     */
     private void processarCaptura(int buracoAtual_index) {
         Buraco buracoAtual = buracos[buracoAtual_index];
-        if (!buracoAtual.isEmpty()) {
+        if (!buracoAtual.isBuracoVazio()) {
             return;
         }
-        if (!buracoAtual.isMySide(tipoJogador)) {
+        if (!buracoAtual.isMeuLado(tipoJogador)) {
             return;
         }
-        obterKallah().addMarbles(obterBuracoOposto(buracoAtual).clearMarbels(), 1);
+        obterKallah().adicionaSementes(obterBuracoOposto(buracoAtual).limparTodasAsSementes(), 1);
     }
 
+    /**
+     * Vai obter o buraco do lado oposto
+     *
+     * @param buraco o buraco do nosso lado
+     * @return o buraco do lado oposto
+     */
     private Buraco obterBuracoOposto(Buraco buraco) {
         if (buraco.isBuracoKallah()) {
             return null;
         }
-        int slotId = buraco.getId();
-        return buracos[((2 * (slotId - 6)) * -1) + slotId];
+        int idBuraco = buraco.getId();
+        return buracos[((2 * (idBuraco - 6)) * -1) + idBuraco];
     }
 
 }

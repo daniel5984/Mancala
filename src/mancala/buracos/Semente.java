@@ -23,12 +23,12 @@ import javafx.util.Duration;
 public class Semente implements Serializable {
 
     String cor;
-    //int pos;
 
     private ImageView imageView;
 
     /**
-     *
+     * Este é o construtor da semente que aplica efeitos de sombra e brilho a
+     * cada imageView de cada semente
      */
     public Semente() {
         //Dropshadow é um efeito de sombra que vai ser aplicado a cada semente
@@ -37,7 +37,7 @@ public class Semente implements Serializable {
         dropShadow.setOffsetX(5.0);
         dropShadow.setOffsetY(5.0);
         dropShadow.setColor(Color.color(0.0, 0.0, 0.0));
-
+        //Efeito de Reflexão para dar efeito 3D
         InnerShadow innerShadow = new InnerShadow();
         innerShadow.setOffsetX(1);
         innerShadow.setOffsetY(1);
@@ -46,23 +46,27 @@ public class Semente implements Serializable {
         innerShadow.setColor(Color.web("0xffffff"));
 
         imageView = new ImageView(getMarbleImage());
+
+        //Tamanho da semente
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        imageView.setMouseTransparent(true);
 
-        //effect2.setInput(effect3);
-        // effect1.setInput(effect2);
-        //    imageView.setEffect(effect1);
-        dropShadow.setInput(innerShadow);
-        imageView.setEffect(dropShadow);
-        //  imageView.setEffect(innerShadow);
+        imageView.setMouseTransparent(true);
+        dropShadow.setInput(innerShadow);//Aplicar efeito de sombra
+        imageView.setEffect(dropShadow);//Aplicar efeito de brilho
+
     }
 
+    /**
+     *
+     * @return retorna a imagem que vai ser usada em cada semente
+     */
     private Image getMarbleImage() {
         return new Image("./images/semente.png");
     }
 
     /**
+     * Retorna a imageView desta Semente
      *
      * @return
      */
@@ -71,9 +75,11 @@ public class Semente implements Serializable {
     }
 
     /**
+     * Este metodo é responsável por criar uma transição para mover uma ou
+     * várias sementes para outro buraco
      *
-     * @param position
-     * @param time
+     * @param position é o destino da transição
+     * @param time é o tempo que a transição demora
      */
     public void moveTo(Posicao position, int time) {
         TranslateTransition tt = new TranslateTransition(Duration.millis(time * 1000), this.imageView);

@@ -5,14 +5,7 @@
  */
 package controlers;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import mancala.Info;
-import mancala.Jogador;
 import mancala.Mancala;
 import mancala.MudarLayout;
 
@@ -41,15 +33,11 @@ public class PrepararController implements Initializable {
     @FXML
     private TextField ip_input;
     @FXML
-    private Button text_btn;
-    @FXML
     private Button iniciar_btn;
-    @FXML
-    private Label test_label;
-
     public Runnable task3;
     public Runnable task4;
     public Info info;
+
     public boolean pararThread = false;
     private int count;
     @FXML
@@ -58,7 +46,16 @@ public class PrepararController implements Initializable {
     private Text ip_label;
 
     /**
-     * Initializes the controller class.
+     * Este é o controller do layout the preparar Client
+     *
+     * Ao Iniciar Se o Jogador escolheu ser servidor o input text de introduzir
+     * o IP desaparece e muda-se uma label para servidor para informação. Também
+     * é feita uma gestão para centralizar as janelas uma ao lado da outra para
+     * não ficarem as duas sobrepostas.
+     *
+     *
+     * @param url .
+     * @param rb .
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,22 +82,31 @@ public class PrepararController implements Initializable {
 
     }
 
+    /**
+     * Este metodo Centra a Janela
+     *
+     * @param stage o stage
+     * @param width a largura
+     * @param height a altura
+     */
     private void centrarJanela(Stage stage, double width, double height) {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - width) / 2);
         stage.setY((screenBounds.getHeight() - height) / 2);
     }
 
-    @FXML
-    private void teste_click(MouseEvent event) {
-
-    }
-
+    /**
+     * Quando se Clica em começar se o input text não tiver nome ele vai ter um
+     * nome genérico caso o input tiver texto então fazemos set do nome na Class
+     * global "Info"
+     *
+     * @param event evento do rato
+     */
     @FXML
     private void comecar_click(MouseEvent event) {
         //Caso Seja servidor ou Client
         if (nome_input.textProperty().isEmpty().get()) {
-            System.out.println("O nome não tem texto em " + info.isServer());
+            //System.out.println("O nome não tem texto em " + info.isServer());
         } else if (!nome_input.textProperty().isEmpty().get() && info.isServer()) {
 
             info.setJogador1(nome_input.getText());

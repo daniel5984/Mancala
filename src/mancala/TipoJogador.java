@@ -6,14 +6,13 @@
 package mancala;
 
 /**
+ * Enumerator para o tipo de jogadores que existem
  *
  * @author DanielSilva
  */
 public enum TipoJogador {
 
     JOGADOR_SERVIDOR,
-
     JOGADOR_CLIENT,
 
-	 
 }

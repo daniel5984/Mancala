@@ -5,43 +5,31 @@
  */
 package mancala.buracos;
 
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import mancala.TipoJogador;
 
-
 /**
+ * Esta Class representa o Kallah que é um Buraco especial por isso extende
+ * Buraco
  *
  * @author DanielSilva
  */
-public class Kallah extends Buraco{
-    
-    
-    
-    	private TipoJogador type;
-	
+public class Kallah extends Buraco {
+
+    private TipoJogador tipo;
+
     /**
+     * Construtor do Kallah
      *
-     * @param position
-     * @param isBank
-     * @param type
-     * @param imageView
-     * @param id
+     * @param posicao posiçao do kallah
+     * @param isKallah se é kallah
+     * @param type o tipo de Jogador
+     * @param imageView a ImageView do kallah
+     * @param id o id do buraco
      */
-    public Kallah(Posicao position, boolean isBank, TipoJogador type, ImageView imageView, int id) {
-		super(position, isBank, imageView, id);
-		this.type = type;
-	}
-	
-    /**
-     *
-     * @return
-     */
-    public boolean isPlayer() {
-		if(type == TipoJogador.JOGADOR_SERVIDOR || type == TipoJogador.JOGADOR_CLIENT)
-			return true;
-		return false;
-	}
-	
-  
+    public Kallah(Posicao posicao, boolean isKallah, TipoJogador type, ImageView imageView, int id) {
+        super(posicao, isKallah, imageView, id);
+        this.tipo = type;
+    }
+
 }

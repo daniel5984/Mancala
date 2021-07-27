@@ -21,25 +21,21 @@ public class MudarLayout {
 
     /**
      *
-     * @param address
+     * @param address O address é o nome do layout que queremos mudar
      */
     public MudarLayout(String address) {
 
         this.address = address;
     }
 
-    public MudarLayout(String address, boolean isServidor) {
-        this.address = address;
-
-    }
-
     /**
-     *
+     * Aqui automatizamos a parte de mudança de layout através do nome mudamos
+     * para qualquer layout
      */
     public void load() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/" + address + ".fxml"));
         try {
-            System.out.println("Mudar Layout para -> "+address);
+            System.out.println("Mudar Layout para -> " + address);
             Mancala.getMainStage().setScene(new Scene((Pane) loader.load()));
         } catch (IOException e) {
             e.printStackTrace();

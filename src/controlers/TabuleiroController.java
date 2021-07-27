@@ -5,22 +5,12 @@
  */
 package controlers;
 
-//import java.awt.Color;
-import java.io.BufferedInputStream;
-import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,44 +18,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.CacheHint;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import mancala.Client;
+import rede.Client;
 import mancala.MudarLayout;
 import mancala.buracos.Buraco;
 import mancala.Info;
 import mancala.Mancala;
-import mancala.Server;
+import rede.Server;
 import mancala.Tabuleiro;
-import mancala.TipoJogador;
-import mancala.infoRede;
-import mancala.infoRedeLadoClient;
-import mancala.infoRedeLadoServer;
+import rede.infoRedeLadoClient;
+import rede.infoRedeLadoServer;
 
 /**
- * FXML Controller class
+ * FXML Controller class Esta Controller class é responsável por controlar a
+ * interação com a interface do jogo
  *
  * @author DanielSilva
  */
@@ -136,7 +116,18 @@ public class TabuleiroController implements Initializable {
     private Server server;
     @FXML
     private Label label_mostrarTipo;
+    @FXML
+    private Label label_sementes;
+    @FXML
+    private Rectangle vencedorBackgroud;
+    @FXML
+    private Button butaoVencedor;
 
+    /**
+     *
+     * @param url .
+     * @param rb .
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         centrarJanela(Mancala.getMainStage(), 800, 540);
@@ -148,8 +139,6 @@ public class TabuleiroController implements Initializable {
         mudaCorAvatar(avatar1, "amarelo");
         mudaCorAvatar(avatar2, "azul");
 
-        //System.out.println("Cor AVATAR1 ->" + info.getAvatarServidorCor());
-        // System.out.println("Cor AVATAR2 ->" + info.getAvatarClientCor());
         imagemBuracoMap = new HashMap<>(); //Associar cada imagem do buraco a um objeto da class Buraco
 
         startGame();
@@ -161,10 +150,9 @@ public class TabuleiroController implements Initializable {
             centrarJanela(Mancala.getMainStage(), -200, 540);
             label_mostrarTipo.setText("Servidor");
         } else {
-             centrarJanela(Mancala.getMainStage(), 1200, 540);
+            centrarJanela(Mancala.getMainStage(), 1200, 540);
             label_mostrarTipo.setText("Client");
         }
-
     }
 
     @FXML
@@ -180,21 +168,22 @@ public class TabuleiroController implements Initializable {
             double y = b.getMinY() + b.getHeight() / 2 - 10;
             coordx[cont] = (int) x;
             coordy[cont] = (int) y;
-            //System.out.println(x + "\n " + y + "\n");
-            //System.out.println(img.getId()+"Minx"+b.getMinX()+"Miny"+b.getMinY()); 
             cont++;
         }
-        tabuleiro = new Tabuleiro(imagensBuraco, estado, coordx, coordy, info.isServer(), avatar1_label, avatar2_label);
+        tabuleiro = new Tabuleiro(imagensBuraco, estado, coordx, coordy, info.isServer(), avatar1_label, avatar2_label, label_mostrarTipo, vencedorBackgroud, butaoVencedor);
         tabuleiro.popularSementes(sementesInicio);//Popular as sementes no stack pane sementesInicio para depois animar para 4 sementes para cada buraco
-
         for (int i = 0; i < imagensBuraco.length; i++) {
-            imagemBuracoMap.put(imagensBuraco[i], tabuleiro.getSlot(i)); //Key -> ImageView Value -> Buraco
+            imagemBuracoMap.put(imagensBuraco[i], tabuleiro.getBuraco(i)); //Key -> ImageView Value -> Buraco
         }
         tabuleiroIniciado = true;
 
         startServer();
     }
 
+    /**
+     * Começar o Servidor se for servidor ou o client se escolheu ser client na
+     * checkbox no layout inicial
+     */
     public void startServer() {
         if (info.isServer()) {
             try {
@@ -213,56 +202,53 @@ public class TabuleiroController implements Initializable {
                 ex.printStackTrace();
             }
         }
-
-        //Atualizar labels
-        Platform.runLater(
-                () -> {
-                    //atualizarLabels();
-                }
-        );
-
     }
 
-    public void atualizarLabels() {
-        try {
-            server.enviarObject(Mancala.getInfo().getJogador1()); //Enviar o nome do label 1 do servidor para o client
-            client.enviarObject(Mancala.getInfo().getJogador2()); //Enviar o nome do label2 do Client para o Servidor
-
-            // avatar1_label.setText(info.getJogador1());
-            //  avatar2_label.setText(info.getJogador2());
-        } catch (IOException ex) {
-            System.out.println("Causa ->" + ex.getCause().getClass());
-            //Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
-        }/* catch (NullPointerException e) {
-            System.out.println("NullPointerException thrown!" + e.getCause().getCause().toString());
-        }
-         */
-    }
-
+    /**
+     * Quando Clica na ImageView que contem a seta de voltar para trás
+     *
+     * @param event rato
+     */
     @FXML
     private void voltar(MouseEvent event) {
         new MudarLayout("Menu").load();
     }
 
+    /**
+     * Quando o rato sai de um Buraco diminuimos a Opacidade para 60%
+     *
+     * @param e rato
+     */
     @FXML
     private void rato_saiu(MouseEvent e) {
-        //Buraco selectedSlot = imagemBuracoMap.get((ImageView) e.getSource());
         mudaOpacidade((ImageView) e.getSource(), 0.6f);
     }
 
+    /**
+     * Quando o rato entra em um buraco Aumentamos a opacidade para 100% e se o
+     * tabuleiro tiver iniciado mostramos quantas sementes tem naquele buraco em
+     * uma label
+     *
+     * @param e
+     */
     @FXML
     private void rato_entrou(MouseEvent e) {
-        //Buraco selectedSlot = imagemBuracoMap.get((ImageView) e.getSource());
+
         mudaOpacidade((ImageView) e.getSource(), 1.0f);
         ImageView imgV = (ImageView) e.getSource();
-        // Bounds boundsInScreen = selectedSlot.getImageView().localToScene(selectedSlot.getImageView().getBoundsInLocal());
-        Bounds boundsInScreen = imgV.localToScene(imgV.getBoundsInLocal());
-        double x = boundsInScreen.getMaxX() - boundsInScreen.getWidth() / 2 - 20;
-        double y = boundsInScreen.getMaxY() - boundsInScreen.getHeight() / 2 - 20;
-        // System.out.println(selectedSlot.getImageView().getId() + "  X:" + x + "  Y" + y);
-
+        if (tabuleiroIniciado) {
+            Buraco buracoSelecionado = imagemBuracoMap.get((ImageView) e.getSource());
+            label_sementes.setText(buracoSelecionado.getMarbleCount() + " sementes no buraco " + buracoSelecionado.getId());
+        }
     }
 
+    /**
+     * Metodo responsável por fazer a mudança da opacidade através de um
+     * FadeTransition
+     *
+     * @param node é a ImageView do Buraco
+     * @param scale
+     */
     private void mudaOpacidade(ImageView node, float scale) {
         FadeTransition obj = new FadeTransition(Duration.millis(100), node);
         obj.setToValue(scale);
@@ -270,12 +256,25 @@ public class TabuleiroController implements Initializable {
         obj.play();
     }
 
+    /**
+     * Este metodo Centra a Janela
+     *
+     * @param stage o stage
+     * @param width a largura
+     * @param height a altura
+     */
     private void centrarJanela(Stage stage, double width, double height) {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - width) / 2);
         stage.setY((screenBounds.getHeight() - height) / 2);
     }
 
+    /**
+     * metodo para mudar a cor Do avatar carregando a imagem
+     *
+     * @param avatar a imageView do avatar
+     * @param cor a cor que escolhemos
+     */
     private void mudaCorAvatar(ImageView avatar, String cor) {
         try {
             URL path = this.getClass().getResource("../images/avatar_" + cor + ".png");
@@ -287,6 +286,9 @@ public class TabuleiroController implements Initializable {
 
     }
 
+    /**
+     * Metodo para começar o jogo
+     */
     private void startGame() {
 
         Timer timer = new Timer();
@@ -300,6 +302,19 @@ public class TabuleiroController implements Initializable {
 
     }
 
+    /**
+     * Método que é ativado quando clicamos em um buraco são feitas várias
+     * verificações : a primeira é se o jogo começou, se não começou faz return
+     * e sai do metodo. depois verifica se o jogador pode fazer o turno , se
+     * pode fazer avançar verifica se é servidor ou client , se for Servidor
+     * cria uma nova instancia do objeto que representa a informação vinda do
+     * lado do servidor e envia para o Client através do Thread na class
+     * Connection, se for client faz o mesmo mas para a classe que representa o
+     * lado do Client e depois processa o turno para o atual
+     * estado(client/server)
+     *
+     * @param event
+     */
     @FXML
     private void click_rato(MouseEvent event) {
 
@@ -309,33 +324,23 @@ public class TabuleiroController implements Initializable {
 
         //Verificar se o Buraco é o do jogador e processar a jogada
         Buraco buracoSelecionado = imagemBuracoMap.get((ImageView) event.getSource());
-        if (tabuleiro.podeFazerTurno(buracoSelecionado.getId(), tabuleiro.getCurrentPlayer())) {
-            
-            //Verificar o Index do buraco que o jogador clicou
-            ImageView imgV = (ImageView) event.getSource();
-            contador = 0;
-            for (ImageView img : imagensBuraco) {
-                if (imgV.equals(img)) {
-                    break;
-                }
-                contador++;
-            }
- 
+        if (tabuleiro.podeFazerTurno(buracoSelecionado.getId(), tabuleiro.obterTipoJogadorAtual())) {
+
             if (info.isServer()) {
                 try {
-                    System.out.println("Enviar informação do server ");
-                    infoRedeLadoServer infoServer = new infoRedeLadoServer("Jogada", contador, buracoSelecionado.getId());
+                    // System.out.println("Enviar informação do server ");
+                    infoRedeLadoServer infoServer = new infoRedeLadoServer("Jogada", buracoSelecionado.getId(), buracoSelecionado.getId());
                     server.enviarObject(infoServer);
-                    tabuleiro.processarTurno(contador);
+                    tabuleiro.processarTurno(buracoSelecionado.getId()); //contador
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             } else if (!info.isServer()) {
                 try {
-                    System.out.println("Enviar informação do client ");
-                    infoRedeLadoClient infoClient = new infoRedeLadoClient("Jogada", contador, buracoSelecionado.getId());
+                    //  System.out.println("Enviar informação do client ");
+                    infoRedeLadoClient infoClient = new infoRedeLadoClient("Jogada", buracoSelecionado.getId(), buracoSelecionado.getId());
                     client.enviarObject(infoClient);
-                    tabuleiro.processarTurno(contador);
+                    tabuleiro.processarTurno(buracoSelecionado.getId());
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -343,6 +348,32 @@ public class TabuleiroController implements Initializable {
 
         } else {
             System.out.println("Não é a sua vez de Jogar ");
+        }
+
+    }
+
+    /**
+     * Quando o Jogo acaba aparece um botão para reniciar o jogo Se clicamos e
+     * formos servidor fecha os sockets e streams do servidor e muda para este
+     * tabuleiro outraves para resetar todas as variaveis, se for client fecha
+     * os sockets e streams do client
+     *
+     * @param event rato
+     */
+    @FXML
+    private void clickReniciar(MouseEvent event) {
+        try {
+            System.out.println("Clicou Reniciar");
+            if (Mancala.getInfo().isServer()) {
+                server.closeServer();
+            } else {
+                client.closeClient();
+            }
+            tabuleiroIniciado = false;
+            new MudarLayout("Tabuleiro").load();
+        } catch (IOException ex) {
+            new MudarLayout("Tabuleiro").load();
+            Logger.getLogger(TabuleiroController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
